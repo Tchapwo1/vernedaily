@@ -1,14 +1,22 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "vernedaily",
+  "main": "src/worker.js",
   "compatibility_date": "2026-10-20",
   "workers_dev": true,
   "observability": {
     "enabled": true
   },
   "assets": {
-    "directory": "website"
+    "directory": "website",
+    "binding": "ASSETS"
   },
+  "kv_namespaces": [
+    {
+      "binding": "SUBSCRIBERS",
+      "id": "66ecc7f439d8471183cb8ddf2c6dbbed"
+    }
+  ],
   "routes": [
     {
       "pattern": "*vernedaily.xyz/*",

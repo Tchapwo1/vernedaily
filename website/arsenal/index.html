@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚡ Agent Arsenal — 10 Superpower Skills for AI Coding Agents</title>
+  <meta name="description" content="Drop-in engineering skills for Cursor, Claude Code, and Windsurf that eliminate agent code bloat and harden security.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20y=%220%22%20width=%22100%22%20height=%22100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <style>
+    :root {
+      --bg: #080A0D;
+      --panel: #11151B;
+      --panel-hover: #161B22;
+      --border: #1F242D;
+      --accent: #00F0FF;
+      --accent-glow: rgba(0, 240, 255, 0.15);
+      --green: #10B981;
+      --text: #F3F4F6;
+      --muted: #9CA3AF;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(17, 21, 28, 0.85);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand {
+      font-family: var(--mono);
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+    .brand span { color: var(--accent); }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .gh-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.8rem;
+      background: #1F2937;
+      border: 1px solid #374151;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      text-decoration: none;
+    }
+    .gh-btn:hover { background: #374151; }
+    .main {
+      flex: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      width: 100%;
+    }
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--accent-glow);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.03em;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 650px;
+      margin: 0 auto 1.5rem auto;
+    }
+    .cli-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: #0D1117;
+      border: 1px solid var(--border);
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      color: var(--accent);
+      cursor: pointer;
+      margin-bottom: 2rem;
+      transition: all 0.2s;
+    }
+    .cli-bar:hover { border-color: var(--accent); }
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+    .filter-tab {
+      background: #11151C;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-tab.active, .filter-tab:hover {
+      background: #1F2937;
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+    .skill-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .skill-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      background: var(--panel-hover);
+    }
+    .skill-top {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .skill-emoji {
+      font-size: 1.6rem;
+      background: #161B22;
+      padding: 0.4rem;
+      border-radius: 8px;
+    }
+    .skill-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      font-family: var(--mono);
+    }
+    .skill-category {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+    .skill-desc {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+      flex: 1;
+    }
+    .skill-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .skill-tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      background: #1F2937;
+      color: #9CA3AF;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .action-btn {
+      flex: 1;
+      padding: 0.5rem;
+      background: #161B22;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.75rem;
+      font-family: var(--mono);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .action-btn:hover {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+    .newsletter-card {
+      margin-top: 3.5rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .newsletter-info h4 { font-size: 1.15rem; color: #fff; margin-bottom: 0.25rem; font-family: var(--mono); }
+    .newsletter-info p { font-size: 0.85rem; color: var(--muted); }
+    .newsletter-form { display: flex; gap: 0.5rem; flex: 1; max-width: 420px; }
+    .newsletter-form input {
+      flex: 1;
+      background: #0D1117;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .newsletter-form input:focus { border-color: var(--accent); }
+    .newsletter-form button {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 0.65rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .newsletter-form button:hover { opacity: 0.9; transform: translateY(-1px); }
+    .newsletter-msg { font-size: 0.85rem; font-family: var(--mono); color: var(--green); display: none; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="/" class="brand">⚡ <span>Agent Arsenal</span></a>
+    <div class="nav-links">
+      <a href="/roast">GitRoast</a>
+      <a href="/spy">RepoSpy</a>
+      <a href="/redteam">Agent RedTeam</a>
+      <a href="https://github.com/Tchapwo1/agent-arsenal" target="_blank" class="gh-btn">⭐ Star on GitHub</a>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="hero">
+      <div class="badge">⚡ 10 Battle-Tested Skills</div>
+      <h1>Superpower Skills for AI Coding Agents</h1>
+      <p class="subtitle">1-click copy directly into <code>.cursorrules</code>, <code>.claude/skills</code>, or install via terminal to force agents to write minimal code, draw diagrams, and eliminate bloat.</p>
+      <div class="cli-bar" onclick="copyCli()" title="Click to copy CLI command">
+        <span>$ npx agent-arsenal add --all</span>
+        <span style="color: var(--muted); font-size: 0.75rem;">📋 Copy</span>
+      </div>
+    </div>
+
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-tab active" onclick="filterSkills('all', this)">All Skills (10)</button>
+      <button class="filter-tab" onclick="filterSkills('Code Quality', this)">Code Quality</button>
+      <button class="filter-tab" onclick="filterSkills('Architecture', this)">Architecture</button>
+      <button class="filter-tab" onclick="filterSkills('Security', this)">Security</button>
+      <button class="filter-tab" onclick="filterSkills('UI/UX Design', this)">UI/UX Design</button>
+      <button class="filter-tab" onclick="filterSkills('Data & APIs', this)">Data & APIs</button>
+      <button class="filter-tab" onclick="filterSkills('Workflow', this)">Workflow</button>
+    </div>
+
+    <div class="skills-grid" id="skillsGrid"></div>
+
+    <div class="newsletter-card">
+      <div class="newsletter-info">
+        <h4>📬 The Weekly Agent Skill Drop</h4>
+        <p>1 battle-tested Cursor skill or system prompt delivered every Tuesday. Zero marketing fluff.</p>
+      </div>
+      <form class="newsletter-form" onsubmit="handleSubscribe(event, 'arsenal-playground')">
+        <input type="email" placeholder="Enter your developer email..." required autocomplete="email" />
+        <button type="submit">Join 1,200+ Devs →</button>
+      </form>
+      <div class="newsletter-msg"></div>
+    </div>
+  </main>
+
+  <script>
+    const SKILLS = [
+      {
+        id: "anti-bloat",
+        name: "anti-bloat",
+        emoji: "✂️",
+        category: "Code Quality",
+        desc: "Cuts agent code bloat by 60%. Prohibits speculative factories, bans redundant wrappers, and enforces surgical diffs.",
+        tags: ["anti-bloat", "clean-code", "refactor"],
+        rule: `You are operating under Strict Anti-Bloat Directives. Achieve the user objective with the minimum possible lines of code, zero speculative abstractions, and zero new runtime dependencies.`
+      },
+      {
+        id: "diagram-craft",
+        name: "diagram-craft",
+        emoji: "📐",
+        category: "Architecture",
+        desc: "Generates clean, publication-grade ASCII architecture schematics, sequence diagrams, and Mermaid state machines.",
+        tags: ["mermaid", "ascii-art", "system-design"],
+        rule: `Whenever asked to explain or document architecture, output clean ASCII box-drawing system schematics or Mermaid sequence diagrams instead of dense text paragraphs.`
+      },
+      {
+        id: "security-shield",
+        name: "security-shield",
+        emoji: "🛡️",
+        category: "Security",
+        desc: "Autonomous defense against leaked API secrets, raw SQL injections, unvalidated SSRF endpoints, and prompt injections.",
+        tags: ["owasp", "security", "anti-sqli"],
+        rule: `Reject hardcoded secrets, raw string query interpolation (SQLi), unvalidated user URLs (SSRF), and unsanitized HTML (XSS). Parameterize all database calls.`
+      },
+      {
+        id: "apple-polish",
+        name: "apple-polish",
+        emoji: "🍎",
+        category: "UI/UX Design",
+        desc: "Elevates frontends to Apple and Linear standards with concentric border radii, layered micro-elevations, and optical tracking.",
+        tags: ["design-system", "apple", "typography"],
+        rule: `Enforce concentric radii (outer = inner + padding), layered 1px borders instead of muddy box shadows, tabular numbers for metrics, and tactile click physics.`
+      },
+      {
+        id: "reverse-engineer",
+        name: "reverse-engineer",
+        emoji: "🕵️",
+        category: "Data & APIs",
+        desc: "Deconstructs curl traces, payloads, and undocumented APIs into typed TypeScript interfaces and runtime Zod schemas.",
+        tags: ["zod", "typescript", "curl-parser"],
+        rule: `When provided with raw curl or JSON payloads, infer nullability, generate runtime Zod validation schemas, and export type-safe client methods.`
+      },
+      {
+        id: "git-surgeon",
+        name: "git-surgeon",
+        emoji: "🩺",
+        category: "Workflow",
+        desc: "Squashes messy agent trial-and-error commits into atomic conventional commits and executive-grade PR summaries.",
+        tags: ["git", "conventional-commits", "pr"],
+        rule: `Format all commits into conventional format: feat(scope): subject in imperative mood. Draft structured PR descriptions with Before/After tables.`
+      },
+      {
+        id: "sql-optimizer",
+        name: "sql-optimizer",
+        emoji: "⚡",
+        category: "Database",
+        desc: "Eliminates deadly N+1 query loops, missing composite indexes, and dangerous table locks during migrations.",
+        tags: ["sql", "postgres", "zero-n1"],
+        rule: `Never fire queries inside loops (eliminate N+1). Ensure composite indexes on multi-column filter queries. Add columns as nullable in large migrations.`
+      },
+      {
+        id: "api-contract",
+        name: "api-contract",
+        emoji: "📜",
+        category: "Data & APIs",
+        desc: "Enforces end-to-end type safety, runtime boundary validation, and RFC 7807 error parity between client and server.",
+        tags: ["api-contract", "type-safety", "rpc"],
+        rule: `Validate all incoming payloads at network boundaries with Zod. Derive TypeScript types directly from schemas. Return RFC 7807 structured errors.`
+      },
+      {
+        id: "copy-surgeon",
+        name: "copy-surgeon",
+        emoji: "✍️",
+        category: "Code Quality",
+        desc: "Strips dead-giveaway AI buzzwords (delve, tapestry, seamlessly, testament) in favor of muscular, human microcopy.",
+        tags: ["microcopy", "anti-ai", "copywriting"],
+        rule: `Strike 'delve', 'tapestry', 'testament', 'seamlessly', 'pivotal' from all copy. Lead with verbs, be specific, and eliminate fluffy marketing adjectives.`
+      },
+      {
+        id: "test-sniper",
+        name: "test-sniper",
+        emoji: "🎯",
+        category: "Code Quality",
+        desc: "Generates high-signal boundary, race-condition, and edge-case unit tests instead of superficial happy-path fluff.",
+        tags: ["vitest", "property-testing", "edge-cases"],
+        rule: `Always write tests for empty collections, boundary values (MAX_SAFE_INTEGER), non-ASCII unicode inputs, and simulated network timeouts.`
+      }
+    ];
+
+    function renderCards(filter = 'all') {
+      const grid = document.getElementById('skillsGrid');
+      grid.innerHTML = '';
+
+      const filtered = filter === 'all' 
+        ? SKILLS 
+        : SKILLS.filter(s => s.category.toLowerCase() === filter.toLowerCase() || (filter === 'Workflow' && s.category === 'Workflow'));
+
+      filtered.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'skill-card';
+        card.innerHTML = `
+          <div class="skill-top">
+            <div class="skill-emoji">${s.emoji}</div>
+            <div>
+              <div class="skill-category">${s.category}</div>
+              <div class="skill-title">${s.name}</div>
+            </div>
+          </div>
+          <div class="skill-desc">${s.desc}</div>
+          <div class="skill-tags">
+            ${s.tags.map(t => `<span class="skill-tag">#${t}</span>`).join('')}
+          </div>
+          <div class="card-actions">
+            <button class="action-btn" onclick="copySkillRule('${s.id}')">📋 Copy for Cursor</button>
+            <a href="https://github.com/Tchapwo1/agent-arsenal/blob/main/skills/${s.id}.md" target="_blank" class="action-btn">View Markdown →</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterSkills(cat, btn) {
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCards(cat);
+    }
+
+    function copySkillRule(id) {
+      const skill = SKILLS.find(s => s.id === id);
+      if (skill) {
+        navigator.clipboard.writeText(`// Skill: ${skill.name}\n${skill.rule}`);
+        alert(`📋 Copied ${skill.name} prompt directive for .cursorrules!`);
+      }
+    }
+
+    function copyCli() {
+      navigator.clipboard.writeText('npx agent-arsenal add --all');
+      alert('📋 Copied CLI command: npx agent-arsenal add --all');
+    }
+
+    async function handleSubscribe(e, source) {
+      e.preventDefault();
+      const form = e.target;
+      const input = form.querySelector('input');
+      const btn = form.querySelector('button');
+      const email = input.value.trim();
+      const card = form.closest('.newsletter-card');
+      const msg = card.querySelector('.newsletter-msg');
+
+      btn.disabled = true;
+      btn.innerText = 'Subscribing...';
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, source: source || 'arsenal-playground' })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          form.style.display = 'none';
+          msg.innerText = data.message || '🎉 Subscribed! Check your inbox on Tuesday.';
+          msg.style.display = 'block';
+        } else {
+          alert(data.error || 'Subscription failed');
+          btn.disabled = false;
+          btn.innerText = 'Join 1,200+ Devs →';
+        }
+      } catch (err) {
+        alert('Network error. Please try again.');
+        btn.disabled = false;
+        btn.innerText = 'Join 1,200+ Devs →';
+      }
+    }
+
+    renderCards();
+  </script>
+</body>
+</html>

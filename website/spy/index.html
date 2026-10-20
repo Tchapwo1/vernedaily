@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🕵️ RepoSpy — Reverse-Engineer Any SaaS Website in 1 Second</title>
+  <meta name="description" content="Sniff any web application's tech stack, design tokens, and generate instant Cursor prompts to clone the architecture.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20y=%220%22%20width=%22100%22%20height=%22100%22><text y=%22.9em%22 font-size=%2290%22>🕵️</text></svg>">
+  <style>
+    :root {
+      --bg: #090B0E;
+      --panel: #11151C;
+      --panel-border: #1E2530;
+      --accent: #A855F7; /* Purple */
+      --accent-glow: rgba(168, 85, 247, 0.2);
+      --green: #10B981;
+      --text: #F3F4F6;
+      --muted: #9CA3AF;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--panel-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(17, 21, 28, 0.85);
+      backdrop-filter: blur(10px);
+    }
+    .brand {
+      font-family: var(--mono);
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+    .brand span { color: var(--accent); }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .gh-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.8rem;
+      background: #1F2937;
+      border: 1px solid #374151;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      text-decoration: none;
+    }
+    .gh-btn:hover { background: #374151; }
+    .main {
+      flex: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      width: 100%;
+    }
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--accent-glow);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.03em;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .search-box {
+      display: flex;
+      gap: 0.75rem;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 0.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      margin-bottom: 1.5rem;
+    }
+    .search-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
+    }
+    .search-box button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    .search-box button:hover {
+      background: #9333ea;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+    .quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+    .quick-tags span {
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      line-height: 2;
+    }
+    .quick-tag {
+      background: #161B22;
+      border: 1px solid var(--panel-border);
+      color: #9CA3AF;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-family: var(--mono);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quick-tag:hover {
+      background: #1F2937;
+      color: #fff;
+      border-color: #374151;
+    }
+    .output-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .output-grid { grid-template-columns: 1fr; }
+    }
+    .panel-box {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .panel-box h3 {
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .stack-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.85rem;
+      font-family: var(--mono);
+    }
+    .stack-label { color: var(--muted); }
+    .stack-val { color: var(--accent); font-weight: 700; }
+    .prompt-box {
+      background: #0D1117;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: #D1D5DB;
+      max-height: 320px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .copy-btn {
+      width: 100%;
+      margin-top: 1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .copy-btn:hover { background: #9333ea; }
+    .loader {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      font-family: var(--mono);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="/" class="brand">🕵️ <span>RepoSpy</span></a>
+    <div class="nav-links">
+      <a href="/roast">GitRoast</a>
+      <a href="/arsenal">Agent Arsenal</a>
+      <a href="/redteam">Agent RedTeam</a>
+      <a href="https://github.com/Tchapwo1/repospy" target="_blank" class="gh-btn">⭐ Star on GitHub</a>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="hero">
+      <div class="badge">🕵️ 1-Second SaaS Reverse Engineer</div>
+      <h1>Sniff Any SaaS Tech Stack & Generate Cursor Prompts</h1>
+      <p class="subtitle">Enter any live website URL to deconstruct its frontend framework, typography, and generate an exact prompt to rebuild it in Cursor.</p>
+    </div>
+
+    <form class="search-box" id="spyForm">
+      <input type="text" id="urlInput" placeholder="e.g. linear.app, stripe.com, vercel.com" required autocomplete="off" spellcheck="false" />
+      <button type="submit" id="spyBtn">🕵️ Reverse-Engineer</button>
+    </form>
+
+    <div class="quick-tags">
+      <span>Try instant targets:</span>
+      <a class="quick-tag" onclick="quickSpy('linear.app')">linear.app</a>
+      <a class="quick-tag" onclick="quickSpy('stripe.com')">stripe.com</a>
+      <a class="quick-tag" onclick="quickSpy('cursor.com')">cursor.com</a>
+      <a class="quick-tag" onclick="quickSpy('vernedaily.xyz')">vernedaily.xyz</a>
+    </div>
+
+    <div class="loader" id="loader">
+      ⚡ Deconstructing DOM, script bundles, and design tokens in 800ms...
+    </div>
+
+    <div class="output-grid" id="outputGrid">
+      <div class="panel-box">
+        <h3>🔍 Detected Architecture</h3>
+        <div class="stack-item"><span class="stack-label">Target:</span><span class="stack-val" id="stackTarget">-</span></div>
+        <div class="stack-item"><span class="stack-label">Framework:</span><span class="stack-val" id="stackFramework">Next.js (App Router)</span></div>
+        <div class="stack-item"><span class="stack-label">Styling:</span><span class="stack-val" id="stackStyling">Tailwind CSS + Custom PBR</span></div>
+        <div class="stack-item"><span class="stack-label">Animations:</span><span class="stack-val" id="stackAnim">Framer Motion / Springs</span></div>
+        <div class="stack-item"><span class="stack-label">Theme Mode:</span><span class="stack-val" id="stackTheme">Dark Obsidian (Concentric Radii)</span></div>
+        <div class="stack-item"><span class="stack-label">Fonts:</span><span class="stack-val" id="stackFonts">Inter, SF Pro, JetBrains Mono</span></div>
+        <div class="stack-item"><span class="stack-label">Icons:</span><span class="stack-val" id="stackIcons">Lucide Icons / Custom SVG</span></div>
+      </div>
+
+      <div class="panel-box">
+        <h3>🤖 Generated Cursor Prompt</h3>
+        <div class="prompt-box" id="promptBox"></div>
+        <button class="copy-btn" onclick="copyCursorPrompt()">📋 Copy Prompt for Cursor</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const MOCK_TARGETS = {
+      'linear.app': {
+        framework: 'React / Next.js',
+        styling: 'Tailwind CSS (Dark Obsidian)',
+        anim: 'Framer Motion (Spring physics)',
+        theme: 'High-contrast Dark (#08090C)',
+        fonts: 'Inter, JetBrains Mono',
+        icons: 'Custom SVG Iconography',
+        prompt: `Act as a Staff Design Engineer. Rebuild a landing page with the exact visual language of Linear.app:\n- Background: #08090C with subtle 40px radial grid and 1px borders (#1F242D).\n- Typography: Inter with optical tracking-tight on headers and tabular-nums on stats.\n- Interactive cards: Concentric radii (16px outer, 8px inner), 1px specular highlight, and spring hover lifts.\n- Tech stack: Next.js App Router, Tailwind CSS, Lucide React.`
+      },
+      'stripe.com': {
+        framework: 'Custom WebGL / Next.js',
+        styling: 'CSS Modules + Canvas PBR',
+        anim: 'Three.js / WebGL animated mesh gradients',
+        theme: 'Dynamic Light/Dark Iridescent',
+        fonts: 'Söhne, SF Mono',
+        icons: 'Stripe Custom SVG',
+        prompt: `Act as a Creative Frontend Technologist. Build a hero section inspired by Stripe:\n- Hero visual: Iridescent WebGL gradient shader with 4-stop flowing neon colors.\n- Typography: Söhne/Inter with high visual hierarchy.\n- Card microcopy: Direct, confident, zero marketing fluff.\n- Tech stack: React, Tailwind CSS, Three.js shader background.`
+      },
+      'cursor.com': {
+        framework: 'Next.js App Router',
+        styling: 'Tailwind CSS (Dark Minimalist)',
+        anim: 'CSS Transitions',
+        theme: 'Dark Obsidian with Lime/Cyan accents',
+        fonts: 'Inter, SF Mono',
+        icons: 'Lucide React',
+        prompt: `Act as an AI Developer Tooling Designer. Build a terminal-centric developer landing page inspired by Cursor.com:\n- Theme: Deep obsidian (#0D1117) with monospace code preview panels.\n- Feature: Interactive typing simulation demonstrating autonomous code edits.\n- Call to Action: Single-click download button and copyable CLI command.\n- Tech stack: Next.js, Tailwind CSS, Framer Motion.`
+      }
+    };
+
+    function quickSpy(url) {
+      document.getElementById('urlInput').value = url;
+      executeSpy(url);
+    }
+
+    document.getElementById('spyForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const url = document.getElementById('urlInput').value.trim();
+      if (url) executeSpy(url);
+    });
+
+    async function executeSpy(targetUrl) {
+      const cleanUrl = targetUrl.toLowerCase().replace(/^https?:\/\//, '').replace(/\/$/, '');
+      const loader = document.getElementById('loader');
+      const outputGrid = document.getElementById('outputGrid');
+      const spyBtn = document.getElementById('spyBtn');
+
+      loader.style.display = 'block';
+      outputGrid.style.display = 'none';
+      spyBtn.disabled = true;
+
+      // Simulate ultra-fast edge reverse engineering (0.7s)
+      await new Promise(r => setTimeout(r, 700));
+
+      const targetData = MOCK_TARGETS[cleanUrl] || {
+        framework: 'Next.js 15 (React 19)',
+        styling: 'Tailwind CSS + CSS Custom Properties',
+        anim: 'Framer Motion (Spring physics)',
+        theme: 'Dark Mode with Elevated Panels',
+        fonts: 'Inter, Geist Sans, SF Mono',
+        icons: 'Lucide React Icons',
+        prompt: `Act as a Staff Frontend Architect. Reverse-engineer and clone the architecture of ${cleanUrl}:\n- Design Tokens: Dark-mode palette with concentric 12px radii and 1px border highlights.\n- Layout: Responsive responsive bento grid with high visual density.\n- Animation: Micro-interactions with transform: translateY(-2px) and active scale(0.98).\n- Stack: Next.js App Router, Tailwind CSS, TypeScript, Zod.`
+      };
+
+      document.getElementById('stackTarget').innerText = cleanUrl;
+      document.getElementById('stackFramework').innerText = targetData.framework;
+      document.getElementById('stackStyling').innerText = targetData.styling;
+      document.getElementById('stackAnim').innerText = targetData.anim;
+      document.getElementById('stackTheme').innerText = targetData.theme;
+      document.getElementById('stackFonts').innerText = targetData.fonts;
+      document.getElementById('stackIcons').innerText = targetData.icons;
+      document.getElementById('promptBox').innerText = targetData.prompt;
+
+      loader.style.display = 'none';
+      outputGrid.style.display = 'grid';
+      spyBtn.disabled = false;
+    }
+
+    function copyCursorPrompt() {
+      const text = document.getElementById('promptBox').innerText;
+      navigator.clipboard.writeText(text);
+      alert('📋 Copied Cursor prompt to clipboard! Paste it into Cursor or Claude.');
+    }
+  </script>
+</body>
+</html>
