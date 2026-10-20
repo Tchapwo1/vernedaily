@@ -53,77 +53,96 @@ Feedback on what prompt directives work best for you is welcome!
 
 ---
 
-## 🐦 2. Viral X / Twitter Launch Threads
+## 🐦 2. Hardened X / Twitter Distribution Protocol (Algorithm-Proof Viral Playbook)
 
-### Thread 1: GitRoast (Humor & Social Proof Hook)
+> [!IMPORTANT]
+> **The 5 Algorithmic Laws of Modern X / Twitter:**
+> 1. **ZERO Outbound Links in Tweet 1:** The X algorithm slashes reach by up to 80% on tweets containing external links (`http://...`). Links belong strictly in the auto-reply (Tweet 2 or 3).
+> 2. **Media Retention Multiplier (2.5x Boost):** Always attach high-contrast dark media (e.g., our generated `gitroast-facebook-react.png` or an auto-playing terminal demo video). The algorithm prioritizes dwell time.
+> 3. **The Bookmark Optimization Trigger:** Modern X ranks Bookmarks higher than Likes. Always include a direct bookmark prompt (*"Bookmark this before your next Cursor refactor"*).
+> 4. **The "Reply Magnet" Loop:** End the thread with an interactive invitation (*"Drop your GitHub repo below and I'll reply with your roast card"*). High-velocity author replies keep the tweet circulating on the "For You" feed for 48+ hours.
+> 5. **Whitespace & Rhythm:** Maximum 1–2 sentences per line. Never post dense text walls.
 
-**Tweet 1 (The Hook):**
+---
+
+### 🧵 Viral Thread 1: GitRoast (The Roast & Social Proof Engine)
+
+**Tweet 1 (The Hook — ZERO Links, Attach Image):**
 > Most GitHub code reviews are polite. GitRoast is not.
 >
 > We built a savage forensic code roaster that analyzes your commit debt, stale PRs, and dirty code to compute your "Survival Score" (0–100).
 >
 > Here’s what happened when we roasted Facebook React: 🧵👇
-> [Attach screenshot / terminal GIF of GitRoast roasting facebook/react: marketing/gitroast-facebook-react.png]
-
-**Tweet 2:**
-> facebook/react scored 82/100 ("SURVIVABLE WITH TRAUMA"):
 >
-> 1. "Your issues tab has 1,420 tickets aging like fine milk in a hot server room."
-> 2. "312 stale pull requests. Contributors are waiting for approval in retirement homes."
-> 3. Recent commit: "update test". Shakespeare could never capture that depth of human suffering.
+> *(Attach: `marketing/gitroast-facebook-react.png`)*
 
-**Tweet 3:**
+**Tweet 2 (The Breakdown & Humor):**
+> facebook/react scored 60/100 ("SURVIVING ON OPTIMISM"):
+>
+> 1. "1,468 open issues? At this point, the bugs have unionized and are demanding healthcare benefits."
+> 2. "Recent commit: '[Fizz] Fix truncated prerender output under backpr' — an artistic masterpiece written by someone clearly crying at 3:14 AM."
+> 3. "Architecture so tightly coupled that changing a CSS margin triggers a database migration."
+
+**Tweet 3 (The Reply Magnet):**
+> Drop your GitHub username or repository below 👇
+>
+> I'll run it through the engine and reply with your official roast card.
+
+**Tweet 4 (The Link Drop — Auto-Reply):**
 > You don't even need to open a terminal to get roasted.
 >
 > We deployed a zero-friction live playground on Cloudflare Edge:
-> 👉 https://vernedaily.xyz/roast
+> 🌐 vernedaily.xyz/roast
 >
-> Enter any repo, get your score, and tweet your shame with one click.
-
-**Tweet 4:**
 > If you prefer the terminal:
 > `npx gitroast <owner/repo>`
 >
-> 100% open-source, free, and contributions are welcome:
-> ⭐ https://github.com/Tchapwo1/gitroast
->
-> What repo should we roast next? Drop them below 👇
+> 100% open-source under MIT:
+> ⭐ github.com/Tchapwo1/gitroast
 
 ---
 
-### Thread 2: Agent Arsenal (The "AI Agent Bloat" Solution)
+### 🧵 Viral Thread 2: Agent Arsenal (The "Cursor Agent Bloat" Antidote)
 
-**Tweet 1 (The Technical Hook):**
-> AI coding agents have a bloat problem.
+**Tweet 1 (The Problem Agitation — ZERO Links):**
+> AI coding agents have a massive bloat problem.
 >
 > Cursor and Claude will happily write 300 lines of boilerplate factory classes when 10 lines of vanilla JavaScript would do.
 >
-> We just released Agent Arsenal — 10 open-source superpower skills to discipline your agents: 🧵👇
+> We spent 2 weeks benchmarking prompt constraints to force agents to write minimal code.
+>
+> Here is the exact "Anti-Bloat" directive we added to `.cursorrules`: 🧵👇
 
-**Tweet 2 (Before vs After):**
+**Tweet 2 (The Before vs After Contrast):**
 > Look at the difference:
 >
-> ❌ Without Anti-Bloat: Agent writes a 35-line `UserDataTransformer` class with private getters and unnecessary interfaces.
+> ❌ Without Anti-Bloat:
+> Agent writes a 35-line `UserDataTransformer` class with private getters, helper managers, and redundant wrapper interfaces.
 >
-> ✅ With Anti-Bloat: 4 lines of pure arrow function. Zero classes. Zero memory overhead. Surgical diffs.
+> ✅ With Anti-Bloat:
+> 4 lines of pure arrow function. Zero classes. Zero memory overhead. Surgical git diffs.
 
-**Tweet 3 (The Arsenal):**
-> The 10 skills included:
-> ✂️ anti-bloat: cut code volume by 60%
+**Tweet 3 (The 10 Superpower Skills):**
+> We packaged this into a suite of 10 zero-dependency skills:
+>
+> ✂️ anti-bloat: cuts code volume by 60%
 > 📐 diagram-craft: ASCII & Mermaid architecture maps
-> 🛡️ security-shield: catch prompt injections & SQLi
+> 🛡️ security-shield: catches prompt injections & SQLi
 > 🍎 apple-polish: concentric radii & tactile micro-interactions
 > 🕵️ reverse-engineer: curl traces to Zod schemas
+> 🩺 git-surgeon: squashes messy commits into clean PRs
 
-**Tweet 4 (Call to Action):**
-> Try the interactive web explorer (1-click copy into .cursorrules):
-> 🌐 https://vernedaily.xyz/arsenal
+**Tweet 4 (Bookmark CTA & Link Handoff):**
+> 📌 Bookmark this thread so you have these rules ready for your next project.
 >
-> Or install via CLI:
+> Interactive browser catalog (1-click copy into Cursor):
+> 🌐 vernedaily.xyz/arsenal
+>
+> Install via CLI:
 > `npx agent-arsenal add anti-bloat`
 >
-> Star the repo on GitHub:
-> ⭐ https://github.com/Tchapwo1/agent-arsenal
+> Star on GitHub (MIT):
+> ⭐ github.com/Tchapwo1/agent-arsenal
 
 ---
 
