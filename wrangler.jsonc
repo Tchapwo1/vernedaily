@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vernedaily",
+  "compatibility_date": "2026-10-20",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "website"
+  },
+  "routes": [
+    {
+      "pattern": "vernedaily.xyz",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.vernedaily.xyz",
+      "custom_domain": true
+    }
+  ]
+}
