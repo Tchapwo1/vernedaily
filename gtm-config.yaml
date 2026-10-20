@@ -1,0 +1,114 @@
+# ==============================================================================
+# God Mode SaaS ABM SDR - Go-To-Market Configuration (gtm-config.yaml)
+# ==============================================================================
+version: "1.0.0"
+
+company:
+  name: "Acme Cloud"
+  category: "Enterprise Cloud Reliability & Drift Automation"
+  min_deal_floor_acv: 10000
+
+# ------------------------------------------------------------------------------
+# Economic Bands & Target Segments
+# ------------------------------------------------------------------------------
+economics:
+  mid_market:
+    min_acv: 15000
+    target_acv: 35000
+    avg_sales_cycle_days: 60
+    min_engineers: 30
+    target_industries:
+      - "FinTech"
+      - "HealthTech"
+      - "E-Commerce Infrastructure"
+      - "High-Growth B2B SaaS"
+
+  enterprise:
+    min_acv: 50000
+    target_acv: 120000
+    avg_sales_cycle_days: 120
+    min_engineers: 100
+    target_industries:
+      - "Enterprise Software"
+      - "Financial Services"
+      - "Logistics & Supply Chain"
+      - "Telecommunications"
+
+# ------------------------------------------------------------------------------
+# Hard Disqualifiers (Automatic Stop Conditions)
+# ------------------------------------------------------------------------------
+disqualifiers:
+  hard_stops:
+    - "Fewer than 25 software engineers on LinkedIn"
+    - "Primary cloud infrastructure is on-premise legacy with zero public cloud"
+    - "Active paying customer or existing open opportunity in CRM"
+    - "Headquartered in sanctioned or unsupported geographic regions"
+    - "Estimated annual ACV capacity below $10,000 floor"
+
+# ------------------------------------------------------------------------------
+# Buying Committee Topology & Pre-Computed SPIN Angles
+# ------------------------------------------------------------------------------
+buying_committee:
+  champion:
+    target_titles:
+      - "Staff Platform Engineer"
+      - "Lead Site Reliability Engineer"
+      - "Principal DevOps Engineer"
+      - "Cloud Infrastructure Lead"
+    spin_angles:
+      latent_problem: "Silent configuration drift across multi-region Kubernetes clusters."
+      quantified_implication: "Triggers on-call firefighting, delays sprint velocity, and breaches internal SLA targets."
+      need_payoff_cta: "Would you be open to seeing the 1-page architecture delta on how FinTech X automated cross-cluster sync?"
+    trojan_asset: "1-Page Cross-Cluster Drift Remediation Architecture Teardown"
+
+  economic_buyer:
+    target_titles:
+      - "VP of Infrastructure"
+      - "VP of Engineering"
+      - "Chief Technology Officer"
+      - "Chief Information Officer"
+    spin_angles:
+      latent_problem: "Unmonitored cross-zone egress costs and audit compliance exposure."
+      quantified_implication: "Causes unexpected $15k-$40k quarterly margin leakage and stalls SOC 2 Type II audit readiness by 6+ weeks."
+      need_payoff_cta: "Would it be entirely unreasonable to share our cloud infrastructure peer benchmark report?"
+    trojan_asset: "Executive Peer Benchmark: Eliminating Cloud Egress Margin Contraction"
+
+  technical_evaluator:
+    target_titles:
+      - "Director of Information Security"
+      - "Head of InfoSec"
+      - "Chief Information Security Officer"
+    spin_angles:
+      latent_problem: "Inconsistent RBAC and IAM policy enforcement across distributed clusters."
+      quantified_implication: "Creates critical compliance failure points during enterprise customer security audits."
+      need_payoff_cta: "Open to reviewing the compliance audit trail specification?"
+    trojan_asset: "Automated Zero-Trust RBAC Policy Enforcement Specification"
+
+# ------------------------------------------------------------------------------
+# Competitor Displacement & Counter-Positioning Matrix
+# ------------------------------------------------------------------------------
+competitor_matrix:
+  CompetitorLegacy:
+    primary_flaw: "Requires heavyweight daemon agents on every cluster node, scaling compute costs exponentially."
+    counter_proof: "Customer Y migrated 80 clusters, cutting node CPU overhead by 34% and saving $72k annually."
+    differentiation_hook: "Agentless eBPF architecture with flat-tier pricing."
+
+  CompetitorCloudNative:
+    primary_flaw: "Single-cloud locked; cannot reconcile policies across hybrid AWS/GCP footprints."
+    counter_proof: "Customer Z consolidated multi-cloud operations into a unified control plane in 14 days."
+    differentiation_hook: "Native multi-cloud policy synchronization across AWS, GCP, and Azure."
+
+# ------------------------------------------------------------------------------
+# BANT Appointment Handoff Requirements
+# ------------------------------------------------------------------------------
+bant_handoff_rules:
+  budget_floor_verified: true
+  min_acv_usd: 10000
+  authority_confirmed: true # Champion + Econ Buyer aligned
+  need_verified_within_days: 60
+  timeframe_max_months: 6
+  mandatory_dossier_fields:
+    - "estimated_acv"
+    - "attendees_and_roles"
+    - "compelling_event"
+    - "target_rollout_timeline"

@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "2026.1",
+  "blackout_periods": [
+    {
+      "name": "Winter Global Blackout",
+      "start_date": "2026-12-15",
+      "end_date": "2027-01-03",
+      "action": "hard_freeze_all_outbound",
+      "scope": "global"
+    },
+    {
+      "name": "Retail & E-Commerce Q4 Code Freeze",
+      "start_date": "2026-10-20",
+      "end_date": "2027-01-05",
+      "action": "throttle_technical_changes_pitch_q1_planning_only",
+      "scope": "industry:e-commerce,retail"
+    },
+    {
+      "name": "EMEA Summer Lull (August Slowdown)",
+      "start_date": "2026-07-20",
+      "end_date": "2026-08-31",
+      "action": "shift_to_research_pause_cold_multi_threading",
+      "scope": "region:EMEA"
+    }
+  ],
+  "regional_holidays": {
+    "GB": [
+      { "date": "2026-01-01", "name": "New Year's Day" },
+      { "date": "2026-04-03", "name": "Good Friday" },
+      { "date": "2026-04-06", "name": "Easter Monday" },
+      { "date": "2026-05-04", "name": "Early May Bank Holiday" },
+      { "date": "2026-05-25", "name": "Spring Bank Holiday" },
+      { "date": "2026-08-31", "name": "Summer Bank Holiday" },
+      { "date": "2026-12-25", "name": "Christmas Day" },
+      { "date": "2026-12-28", "name": "Boxing Day (substitute day)" }
+    ],
+    "US": [
+      { "date": "2026-01-01", "name": "New Year's Day" },
+      { "date": "2026-01-19", "name": "Martin Luther King Jr. Day" },
+      { "date": "2026-02-16", "name": "Presidents' Day" },
+      { "date": "2026-05-25", "name": "Memorial Day" },
+      { "date": "2026-06-19", "name": "Juneteenth National Independence Day" },
+      { "date": "2026-07-03", "name": "Independence Day (Observed)" },
+      { "date": "2026-09-07", "name": "Labor Day" },
+      { "date": "2026-10-12", "name": "Columbus Day / Indigenous Peoples' Day" },
+      { "date": "2026-11-11", "name": "Veterans Day" },
+      { "date": "2026-11-26", "name": "Thanksgiving Day" },
+      { "date": "2026-11-27", "name": "Day After Thanksgiving (Extended Freeze)" },
+      { "date": "2026-12-25", "name": "Christmas Day" }
+    ]
+  },
+  "school_half_terms": {
+    "GB": [
+      { "name": "February Half Term", "start_date": "2026-02-16", "end_date": "2026-02-20", "throttle_percent": 50 },
+      { "name": "May Half Term", "start_date": "2026-05-25", "end_date": "2026-05-29", "throttle_percent": 50 },
+      { "name": "October Half Term", "start_date": "2026-10-26", "end_date": "2026-10-30", "throttle_percent": 50 }
+    ]
+  }
+}

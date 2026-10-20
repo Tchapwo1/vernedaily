@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VerneDaily — The Autonomous AI Co-Pilot for Enterprise SDRs</title>
+  <meta name="description" content="Turn 45 minutes of manual account research into 30 seconds of consultative pipeline. Free open-core SDR skill for individual reps. God Mode SaaS for enterprise sales teams.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20y=%220%22%20width=%22100%22%20height=%22100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <style>
+    :root {
+      --bg: #080A0D;
+      --panel: #11151B;
+      --panel-hover: #161B22;
+      --border: #1F242D;
+      --border-accent: #30343A;
+      --accent: #A3E635; /* Signal Lime */
+      --accent-glow: rgba(163, 230, 53, 0.15);
+      --cyan: #38BDF8;
+      --text: #F3F4F6;
+      --muted: #9CA3AF;
+      --dark-muted: #4B5563;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Grid background texture */
+    .bg-grid {
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 900px;
+      background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-badge {
+      background: rgba(163, 230, 53, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(163, 230, 53, 0.3);
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #fff; }
+
+    .btn-nav {
+      background: var(--panel);
+      color: #fff !important;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-weight: 500;
+    }
+    .btn-nav:hover {
+      border-color: var(--accent);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 850px;
+      margin: 0 auto 4rem;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: 3.25rem;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 1.5rem;
+      color: #fff;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, #fff 40%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-p {
+      font-size: 1.2rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cli-box {
+      background: var(--panel);
+      border: 1px solid var(--border-accent);
+      border-radius: 12px;
+      padding: 0.9rem 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: #fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .cli-box code { color: var(--accent); }
+    .btn-copy {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: all 0.2s;
+    }
+    .btn-copy:hover {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    /* Live Simulator Section */
+    .simulator-section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 5rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+
+    .sim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .sim-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .target-tabs {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .target-btn {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .target-btn.active {
+      background: rgba(163, 230, 53, 0.12);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .cockpit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 850px) {
+      .cockpit-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 2.25rem; }
+    }
+
+    .card {
+      background: #0B0E13;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .card-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-label span { color: var(--accent); }
+
+    .email-subject {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .email-body {
+      font-size: 0.95rem;
+      color: #E5E7EB;
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+
+    .stat-pill {
+      display: inline-block;
+      margin-top: 1rem;
+      background: rgba(255,255,255,0.04);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .battlecard-item {
+      margin-bottom: 1rem;
+    }
+    .battlecard-item:last-child { margin-bottom: 0; }
+    .battlecard-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+    .battlecard-text {
+      font-size: 0.9rem;
+      color: #D1D5DB;
+    }
+
+    /* Comparison Table */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+    @media (max-width: 850px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+
+    .pricing-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent);
+      box-shadow: 0 0 40px var(--accent-glow);
+    }
+
+    .pricing-tier {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+
+    .pricing-price {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    .pricing-price span {
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin: 2rem 0;
+    }
+    .pricing-features li {
+      font-size: 0.95rem;
+      color: #D1D5DB;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .pricing-features li::before {
+      content: "✓";
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .btn-tier {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 0.85rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .btn-tier-free {
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      border: 1px solid var(--border);
+    }
+    .btn-tier-free:hover {
+      background: rgba(255,255,255,0.12);
+    }
+    .btn-tier-paid {
+      background: var(--accent);
+      color: #000;
+      border: 1px solid var(--accent);
+    }
+    .btn-tier-paid:hover {
+      background: #8ecb2a;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      color: var(--dark-muted);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+
+  <header>
+    <a href="/" class="brand">
+      <span>VerneDaily</span>
+      <span class="brand-badge">FREE & GOD MODE</span>
+    </a>
+    <nav>
+      <a href="#simulator">Live Cockpit</a>
+      <a href="#pricing">Free vs. God Mode</a>
+      <a href="https://github.com" target="_blank" class="btn-nav">GitHub Repository</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="badge-pill">⚡ THE AI IRON MAN SUIT FOR ENTERPRISE SDRS</div>
+      <h1>Turn 45 Minutes of Account Research into <span>30 Seconds of Pipeline</span></h1>
+      <p class="hero-p">
+        Stop blasting unread generic templates. VerneDaily autonomously extracts deep technical pain, maps the 6.8-person buying committee, and drafts 75-word consultative SPIN emails that actually get replies.
+      </p>
+
+      <div class="cli-box">
+        <span>$</span>
+        <code>npx vernedaily-skill</code>
+        <button class="btn-copy" onclick="copyInstall()">COPY COMMAND</button>
+      </div>
+    </section>
+
+    <!-- LIVE SIMULATOR -->
+    <section id="simulator" class="simulator-section">
+      <div class="sim-header">
+        <div class="sim-title">
+          <div class="live-dot"></div>
+          Live Autonomous SDR Cockpit Simulator
+        </div>
+        <div class="target-tabs">
+          <button class="target-btn active" onclick="loadSim('stripe')">Stripe</button>
+          <button class="target-btn" onclick="loadSim('datadog')">Datadog</button>
+          <button class="target-btn" onclick="loadSim('cloudscale')">Cloudscale.io</button>
+        </div>
+      </div>
+
+      <div class="cockpit-grid">
+        <!-- Email Draft Card -->
+        <div class="card">
+          <div class="card-label"><span>✉️</span> Pre-Computed SPIN Draft (<75 Words)</div>
+          <div id="sim-subject" class="email-subject">Subject: eks policy drift</div>
+          <div id="sim-body" class="email-body">Marcus — noticed your team is scaling 30+ EKS clusters across US-East. At that scale, keeping IAM policies in sync usually leads to silent configuration drift, pulling Senior SREs into 15+ hours of manual firefighting per sprint.
+
+Would it be completely unreasonable to share the 1-page architecture teardown showing how FinTech X automated that sync without extra node daemons?</div>
+          <div id="sim-meta" class="stat-pill">54 words | Readability: Grade 4.9 | Voss No-CTA: Verified</div>
+        </div>
+
+        <!-- Phone & Committee Card -->
+        <div class="card">
+          <div class="card-label"><span>📞</span> Live Cold Call & Voicemail Battlecard</div>
+          
+          <div class="battlecard-item">
+            <div class="battlecard-label">15-Second Pattern Opener</div>
+            <div id="sim-call" class="battlecard-text">"Marcus? Alex with Acme. I know you weren't expecting my call. I sent a 2-line note on Tuesday regarding cross-zone egress on your EKS clusters. Do you have 30 seconds to tell me if I'm off base?"</div>
+          </div>
+
+          <div class="battlecard-item" style="margin-top: 1rem;">
+            <div class="battlecard-label">20-Second Voss Voicemail</div>
+            <div id="sim-vm" class="battlecard-text">"Marcus — Alex with Acme. Left a short question in your inbox regarding cross-cluster configuration drift. No need to call me back; just reply to that email if it makes sense to share the architecture teardown. Thanks."</div>
+          </div>
+
+          <div class="battlecard-item" style="margin-top: 1rem;">
+            <div class="battlecard-label">Verified Buying Role</div>
+            <div id="sim-role" class="battlecard-text">Champion: Marcus Vance (Lead Platform SRE) | Economic Buyer: Sarah Lin (VP Infrastructure)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING / FREEMIUM SPLIT -->
+    <section id="pricing">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="font-size: 2.2rem; font-weight: 800; color: #fff;">Choose Your Operational Weapon</h2>
+        <p style="color: var(--muted);">Free forever for individual reps. God Mode SaaS for high-growth enterprise teams.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Free Tier -->
+        <div class="pricing-card">
+          <div class="pricing-tier">VerneDaily Free</div>
+          <div class="pricing-price">$0 <span>/ forever</span></div>
+          <p style="color: var(--muted); font-size: 0.9rem;">For individual SDRs who want quota relief without waiting for company IT approval.</p>
+          <ul class="pricing-features">
+            <li>Single domain lookups on demand</li>
+            <li>75-word pre-computed SPIN drafter</li>
+            <li>15-second cold call pattern openers</li>
+            <li>Chris Voss "No"-oriented CTAs</li>
+            <li>5th-grade mobile readability gate</li>
+            <li>100% private, local agent runner</li>
+          </ul>
+          <a href="https://github.com" target="_blank" class="btn-tier btn-tier-free">Get Free Skill on GitHub</a>
+        </div>
+
+        <!-- Paid God Mode -->
+        <div class="pricing-card featured">
+          <div class="pricing-tier">VerneDaily God Mode SaaS</div>
+          <div class="pricing-price">$1,500 <span>/ month / team</span></div>
+          <p style="color: var(--muted); font-size: 0.9rem;">For Sales Leaders & RevOps who demand predictable enterprise pipeline.</p>
+          <ul class="pricing-features">
+            <li>Everything in Free Tier</li>
+            <li><strong>2-Way Automated CRM Sync</strong> (Salesforce & HubSpot)</li>
+            <li><strong>6.8-Person Committee Multi-Threading</strong> State Machine</li>
+            <li><strong>Automated Bank Holiday & Code Freeze Engine</strong></li>
+            <li><strong>Out-Of-Office (OOO) Delegate Lead Harvester</strong></li>
+            <li><strong>Multi-Rep Account Collision Lock</strong></li>
+            <li><strong>BANT SQA Handoff Dossiers</strong> for Account Executives</li>
+          </ul>
+          <a href="mailto:contact@vernedaily.xyz" class="btn-tier btn-tier-paid">Request God Mode Access</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>© 2026 VerneDaily. All rights reserved. Built for consultative enterprise B2B sales.</div>
+    <div>
+      <a href="https://www.vernedaily.xyz">www.vernedaily.xyz</a>
+    </div>
+  </footer>
+
+  <script>
+    const data = {
+      stripe: {
+        subject: "Subject: eks policy drift",
+        body: "Marcus — noticed your team is scaling 30+ EKS clusters across US-East. At that scale, keeping IAM policies in sync usually leads to silent configuration drift, pulling Senior SREs into 15+ hours of manual firefighting per sprint.\n\nWould it be completely unreasonable to share the 1-page architecture teardown showing how FinTech X automated that sync without extra node daemons?",
+        meta: "54 words | Readability: Grade 4.9 | Voss No-CTA: Verified",
+        call: "\"Marcus? Alex with Acme. I know you weren't expecting my call. I sent a 2-line note on Tuesday regarding cross-zone egress on your EKS clusters. Do you have 30 seconds to tell me if I'm off base?\"",
+        vm: "\"Marcus — Alex with Acme. Left a short question in your inbox regarding cross-cluster configuration drift. No need to call me back; just reply to that email if it makes sense to share the architecture teardown. Thanks.\"",
+        role: "Champion: Marcus Vance (Lead Platform SRE) | Economic Buyer: Sarah Lin (VP Infrastructure)"
+      },
+      datadog: {
+        subject: "Subject: cross-az egress review",
+        body: "Sarah — noticed your infrastructure footprint across multi-cloud regions. At high ingestion volumes, inter-region telemetry transfers often drive unexpected 20%+ quarterly margin leakage on cloud egress.\n\nOpen to reviewing the benchmark report on how peers eliminated cross-zone egress fees without sacrificing metrics latency?",
+        meta: "47 words | Readability: Grade 5.1 | Voss No-CTA: Verified",
+        call: "\"Sarah? Alex with Acme. Sent a brief note this morning regarding cross-AZ data transfer fees on your ingestion pipeline. Do you have 30 seconds to tell me if that's a priority for Q1?\"",
+        vm: "\"Sarah — Alex with Acme. Left a note in your inbox regarding cloud egress margins. No call back needed; just reply to that email if you'd like the peer benchmark. Thanks.\"",
+        role: "Champion: David Ross (Head of Cloud Ops) | Economic Buyer: Sarah Chen (VP of Engineering)"
+      },
+      cloudscale: {
+        subject: "Subject: soc 2 cluster sync",
+        body: "Kevin — saw your recent security expansion announcement. With distributed Kubernetes deployments, unmonitored RBAC policy drift is usually the #1 blocker during annual SOC 2 Type II audit renewals.\n\nWould it be completely out of line to send over our 1-page zero-trust cluster audit checklist?",
+        meta: "49 words | Readability: Grade 4.6 | Voss No-CTA: Verified",
+        call: "\"Kevin? Alex with Acme. Sent a note on Wednesday regarding audit trail sync across your distributed clusters. Do you have 30 seconds to see if this matches your Q4 compliance focus?\"",
+        vm: "\"Kevin — Alex with Acme. Left a brief question in your inbox regarding SOC 2 cluster drift. No call back needed; reply to that note if you want the audit checklist. Thanks.\"",
+        role: "Champion: Liam O'Connor (SecOps Lead) | Technical Evaluator: Dr. Kevin Patel (CISO)"
+      }
+    };
+
+    function loadSim(key) {
+      document.querySelectorAll('.target-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      const item = data[key];
+      document.getElementById('sim-subject').innerText = item.subject;
+      document.getElementById('sim-body').innerText = item.body;
+      document.getElementById('sim-meta').innerText = item.meta;
+      document.getElementById('sim-call').innerText = item.call;
+      document.getElementById('sim-vm').innerText = item.vm;
+      document.getElementById('sim-role').innerText = item.role;
+    }
+
+    function copyInstall() {
+      navigator.clipboard.writeText("npx vernedaily-skill");
+      const btn = document.querySelector('.btn-copy');
+      btn.innerText = "COPIED!";
+      setTimeout(() => { btn.innerText = "COPY COMMAND"; }, 2000);
+    }
+  </script>
+</body>
+</html>
