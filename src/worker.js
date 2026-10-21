@@ -1,6 +1,36 @@
+import { evaluateDynamicAccount } from './enrichment/connector.js';
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    // API Route: Dynamic Live Account Research
+    if (url.pathname === '/api/research' && request.method === 'POST') {
+      try {
+        const body = await request.json();
+        const domain = (body.domain || '').trim();
+
+        if (!domain) {
+          return new Response(JSON.stringify({ error: 'Please provide a target company domain (e.g. linear.app).' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+          });
+        }
+
+        // Run dynamic 6-stage enrichment & evaluation engine
+        const evaluation = await evaluateDynamicAccount(domain, env);
+
+        return new Response(JSON.stringify(evaluation), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message, stack: err.stack }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+        });
+      }
+    }
 
     // API Route: Email Capture / Subscription
     if (url.pathname === '/api/subscribe' && request.method === 'POST') {
