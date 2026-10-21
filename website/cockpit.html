@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VerneDaily — Pipeline Prioritization & Intelligence Cockpit</title>
+  <meta name="description" content="Zero-install account intelligence and daily action queue for founder-led B2B SaaS and enterprise sales teams.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20y=%220%22%20width=%22100%22%20height=%22100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <style>
+    :root {
+      --bg: #090B0E;
+      --panel: #11141A;
+      --panel-hover: #171B22;
+      --panel-sub: #0D1016;
+      --border: #1E232D;
+      --border-accent: #2C3340;
+      --accent: #A3E635; /* Signal Lime */
+      --accent-muted: rgba(163, 230, 53, 0.12);
+      --cyan: #38BDF8;
+      --amber: #F59E0B;
+      --red: #EF4444;
+      --text: #F3F4F6;
+      --muted: #9CA3AF;
+      --dark-muted: #4B5563;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .brand-badge {
+      background: var(--accent-muted);
+      color: var(--accent);
+      border: 1px solid rgba(163, 230, 53, 0.3);
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--muted);
+      background: var(--panel-sub);
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    /* Main Container */
+    .app-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      height: calc(100vh - 58px);
+      overflow: hidden;
+    }
+
+    /* Left Sidebar: Daily Action Queue */
+    .queue-sidebar {
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .queue-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel-sub);
+    }
+    .queue-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .queue-subtitle {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .search-box {
+      margin-top: 0.75rem;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: #fff;
+      font-size: 0.8rem;
+      outline: none;
+      font-family: var(--font-sans);
+    }
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .queue-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.5rem;
+    }
+
+    .queue-item {
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      margin-bottom: 0.35rem;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .queue-item:hover {
+      background: var(--panel-hover);
+      border-color: var(--border);
+    }
+    .queue-item.active {
+      background: rgba(163, 230, 53, 0.05);
+      border-color: var(--accent);
+    }
+
+    .item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .item-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .item-score {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .item-meta {
+      display: flex;
+      gap: 6px;
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    .item-trigger {
+      font-size: 0.75rem;
+      color: #D1D5DB;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Main Workspace */
+    .workspace-pane {
+      background: var(--bg);
+      overflow-y: auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* Account Header Banner */
+    .account-banner {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .acc-info h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .acc-domain {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    .pill-state {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .state-pursue { background: var(--accent-muted); color: var(--accent); border: 1px solid var(--accent); }
+    .state-research_more { background: rgba(245, 158, 11, 0.12); color: var(--amber); border: 1px solid var(--amber); }
+    .state-monitor { background: rgba(56, 189, 248, 0.12); color: var(--cyan); border: 1px solid var(--cyan); }
+    .state-disqualify { background: rgba(239, 68, 68, 0.12); color: var(--red); border: 1px solid var(--red); }
+
+    .score-breakdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .score-box {
+      background: var(--panel-sub);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 0.8rem;
+    }
+    .score-label {
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+    }
+    .score-val {
+      font-size: 1.15rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: #fff;
+      margin-top: 2px;
+    }
+
+    /* Content Cards Grid */
+    .cockpit-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.6rem;
+    }
+
+    /* Evidence Dossier List */
+    .evidence-item {
+      background: var(--panel-sub);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .evidence-item.inference {
+      border-left-color: var(--cyan);
+    }
+    .evidence-item.contradiction {
+      border-left-color: var(--red);
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .evidence-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+    .evidence-quote {
+      font-size: 0.82rem;
+      color: #E5E7EB;
+      font-style: italic;
+    }
+    .evidence-link {
+      color: var(--cyan);
+      text-decoration: none;
+      word-break: break-all;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+    }
+    .evidence-link:hover { text-decoration: underline; }
+
+    /* Draft & Battlecard Area */
+    .draft-box {
+      background: var(--panel-sub);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.85rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #F3F4F6;
+    }
+    .draft-subject {
+      font-weight: 700;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 4px;
+    }
+    .draft-words {
+      font-size: 0.7rem;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Phone Opener Box */
+    .call-box {
+      background: var(--panel-sub);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.85rem;
+      font-size: 0.82rem;
+      color: #D1D5DB;
+    }
+    .call-title {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      margin-bottom: 4px;
+    }
+
+    /* AE Discovery Dossier (Full Width) */
+    .ae-dossier-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+
+    .ae-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    .ae-box {
+      background: var(--panel-sub);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem;
+    }
+    .ae-dim-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .ae-status-pill {
+      font-size: 0.65rem;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    .status-verified { background: rgba(163, 230, 53, 0.15); color: var(--accent); }
+    .status-inferred { background: rgba(56, 189, 248, 0.15); color: var(--cyan); }
+    .status-unknown { background: rgba(156, 163, 175, 0.15); color: var(--muted); }
+
+    .ae-details {
+      font-size: 0.75rem;
+      color: #D1D5DB;
+      margin-bottom: 6px;
+    }
+    .ae-question {
+      font-size: 0.72rem;
+      color: #FBBF24;
+      font-style: italic;
+      border-top: 1px dashed var(--border);
+      padding-top: 4px;
+    }
+
+    .btn-action {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-action:hover {
+      background: #8ecb2a;
+    }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+    .btn-outline:hover {
+      background: var(--panel-hover);
+      border-color: var(--accent);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--panel);
+      border: 1px solid var(--accent);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      display: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="brand">
+      <span>VerneDaily</span>
+      <span class="brand-badge">PIPELINE INTELLIGENCE COCKPIT</span>
+    </a>
+    <div class="header-actions">
+      <div class="badge-status">
+        <span class="status-dot"></span>
+        <span>ENGINE ACTIVE (WAL MODE)</span>
+      </div>
+      <button class="btn-outline" onclick="exportQueueCSV()">Export Queue (CSV)</button>
+      <button class="btn-outline" onclick="copyAEMemo()">Copy AE Pre-Meeting Memo</button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- SIDEBAR: DAILY ACTION QUEUE -->
+    <aside class="queue-sidebar">
+      <div class="queue-header">
+        <div class="queue-title">
+          <span>Daily Action Queue</span>
+          <span id="queue-count" style="color: var(--accent); font-family: var(--font-mono);">9 Pursue</span>
+        </div>
+        <div class="queue-subtitle">Sorted by H_priority (Fit × Momentum × ACV)</div>
+        <div class="search-box">
+          <input type="text" class="search-input" id="search-box" placeholder="Filter accounts or search..." onkeyup="filterAccounts()">
+        </div>
+      </div>
+      <div class="queue-list" id="queue-list-container">
+        <!-- Injected via JavaScript -->
+      </div>
+    </aside>
+
+    <!-- MAIN WORKSPACE -->
+    <main class="workspace-pane" id="workspace-container">
+      <!-- Account Header Banner -->
+      <section class="account-banner">
+        <div class="acc-info">
+          <h2>
+            <span id="acc-name">RetailPeak Commerce</span>
+            <span id="acc-state-pill" class="pill-state state-pursue">PURSUE</span>
+          </h2>
+          <div class="acc-domain" id="acc-domain">retailpeak-q4.com · Tier-1 Enterprise Infra (£65,000 ACV)</div>
+          <div class="score-breakdown">
+            <div class="score-box">
+              <div class="score-label">Priority Score (H_priority)</div>
+              <div class="score-val" id="acc-priority" style="color: var(--accent);">£56,934</div>
+            </div>
+            <div class="score-box">
+              <div class="score-label">ICP Fit Score</div>
+              <div class="score-val" id="acc-fit">100 / 100</div>
+            </div>
+            <div class="score-box">
+              <div class="score-label">Buying Momentum</div>
+              <div class="score-val" id="acc-momentum">94 / 100</div>
+            </div>
+            <div class="score-box">
+              <div class="score-label">Evidence Confidence</div>
+              <div class="score-val" id="acc-confidence">94% (Sourced)</div>
+            </div>
+          </div>
+        </div>
+        <button class="btn-action" onclick="approveAndRecord()">
+          <span>✓</span> Approve Draft & Next Action
+        </button>
+      </section>
+
+      <!-- Grid: Evidence Dossier vs Diagnostic Outreach -->
+      <div class="cockpit-grid">
+        <!-- Evidence Dossier -->
+        <section class="card">
+          <div class="card-title">
+            <span>🔍</span> Audited Evidence Dossier (Facts vs. Inferences)
+          </div>
+          <div id="evidence-container" style="display: flex; flex-direction: column; gap: 0.6rem;">
+            <!-- Evidence items injected here -->
+          </div>
+        </section>
+
+        <!-- Diagnostic Draft & Battlecard -->
+        <section class="card">
+          <div class="card-title">
+            <span>✉️</span> Diagnostic Hypothesis Draft (<75 Words)
+          </div>
+          <div class="draft-box">
+            <div class="draft-subject" id="draft-subject">Subject: q1 architecture sync</div>
+            <div id="draft-body" style="white-space: pre-line;">Sarah — saw the Q4 production code freeze announcement across RetailPeak's engineering squads.
+
+When major e-commerce teams enter freeze windows, cloud egress audits and cross-cluster state drift usually become top priorities for January sprint planning.
+
+Open to seeing how Stripe kept multi-cluster overhead flat while preparing for Q1 volume?</div>
+            <div class="draft-words">
+              <span id="draft-count">48 words | Readability: Grade 4.9</span>
+              <span>Draft-Only Safety Air-Gap: Active</span>
+            </div>
+          </div>
+
+          <div class="call-box" style="margin-top: 0.25rem;">
+            <div class="call-title">📞 15-Second Pattern Interrupt Cold Opener</div>
+            <div id="call-script">"Sarah? Alex with Acme. I know you weren't expecting my call. I sent a 2-line note on Tuesday regarding your Q1 multi-cluster architecture planning post-freeze. Do you have 30 seconds to tell me if I'm off base?"</div>
+          </div>
+        </section>
+      </div>
+
+      <!-- AE Discovery Dossier Handoff (Progressive Qualification) -->
+      <section class="ae-dossier-card">
+        <div class="card-title">
+          <span>🤝</span> AE Discovery Handoff Dossier (Zero Fake BANT)
+        </div>
+        <div class="ae-grid" id="ae-grid-container">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <script>
+    // Industry Top 5 Leaders + Representative Accounts Preloaded
+    const ACCOUNTS = [
+      {
+        id: "IND-01",
+        name: "Shopify",
+        domain: "shopify.com",
+        acv: 135000,
+        state: "pursue",
+        h_priority: 127600,
+        fit: 100,
+        momentum: 96,
+        confidence: 1.0,
+        trigger: "Pre-BFCM code freeze: continuous automated cluster configuration drift auditing",
+        subject: "Subject: pre-bfcm cluster freeze sync",
+        draft: "Alex — saw Shopify's annual production code freeze announcement across global merchant checkout fleets.\n\nDuring peak freeze windows, subtle configuration drift between staging and prod clusters is typically the #1 hidden risk before Black Friday traffic surges.\n\nOpen to seeing how enterprise merchant fleets run continuous automated drift verification before peak holiday traffic?",
+        call: "\"Alex? Alex with Acme. I know you're deep in BFCM code freeze prep. Sent a 2-line note regarding automated pre-freeze cluster drift verification. Have 30 seconds to tell me if that's handled?\"",
+        evidence: [
+          { type: "fact", source: "https://shopify.engineering/black-friday-cyber-monday-cloud-freeze", date: "7d ago", quote: "Preparing hundreds of Kubernetes clusters for BFCM traffic involves a strict code freeze and continuous automated configuration auditing to prevent state drift before peak traffic surges." },
+          { type: "fact", source: "https://shopify.com/careers/staff-production-engineer", date: "21d ago", quote: "Staff Production Engineer to ensure multi-cluster fleet consistency and eliminate deployment regressions across global merchant checkout pipelines." }
+        ],
+        ae: {
+          budget: { status: "verified", detail: "Annual cloud infrastructure spend estimated >$5M+ based on 3600 engineers", question: "Is cluster drift automation funded under core cloud platform tooling or discretionary reliability reserves?" },
+          authority: { status: "inferred", detail: "Champion: Alex Beaulieu (Staff Production Engineer). Economic Buyer: Farhan Thawar (VP Eng)", question: "Does Farhan Thawar require proof of zero-node-overhead before approving an architectural trial?" },
+          need: { status: "verified", detail: "Continuous automated cluster configuration drift auditing pre-BFCM", question: "How many engineering hours per week are currently lost to manual cluster state reconciliation?" },
+          timeframe: { status: "verified", detail: "Peak holiday freeze window active; Q1 architecture roadmap in review", question: "What is the hard operational deadline for automating this reconciliation?" }
+        }
+      },
+      {
+        id: "IND-02",
+        name: "Snowflake",
+        domain: "snowflake.com",
+        acv: 140000,
+        state: "pursue",
+        h_priority: 110700,
+        fit: 100,
+        momentum: 81,
+        confidence: 1.0,
+        trigger: "Cross-cloud IAM/RBAC drift governance across AWS, GCP, and Azure",
+        subject: "Subject: cross-cloud rbac drift",
+        draft: "Priya — saw Snowflake's work standardizing security posture across AWS, GCP, and Azure.\n\nManaging multi-cloud deployments usually forces platform teams into constant manual firefighting reconciling state drift across three incompatible cloud IAM primitives.\n\nWould it be completely unreasonable to share our 1-page cross-cloud drift reconciliation blueprint?",
+        call: "\"Priya? Alex with Acme. Sent a short note on Wednesday regarding cross-cloud IAM drift reconciliation across your 3 hyperscalers. Do you have 30 seconds to see if I'm on target?\"",
+        evidence: [
+          { type: "fact", source: "https://snowflake.com/blog/cross-cloud-drift-governance", date: "39d ago", quote: "Maintaining identical security posture and automated state configuration across AWS, GCP, and Azure requires continuous RBAC drift reconciliation across three distinct IAM primitives." },
+          { type: "fact", source: "https://careers.snowflake.com/jobs/lead-reliability-engineer", date: "13d ago", quote: "Lead Reliability Engineer responsible for automated multi-cloud failover invariants and eliminating configuration discrepancies across cloud provider boundaries." }
+        ],
+        ae: {
+          budget: { status: "verified", detail: "Annual cloud infrastructure spend estimated >$5M+ based on 2400 engineers", question: "Is cluster drift automation funded under core cloud platform tooling or discretionary reliability reserves?" },
+          authority: { status: "inferred", detail: "Champion: Priya Sharma (Lead SRE). Economic Buyer: Thomas Sterling (VP Cloud Platform)", question: "Does Thomas Sterling require proof of zero-node-overhead before approving an architectural trial?" },
+          need: { status: "verified", detail: "Continuous cross-cloud IAM/RBAC drift governance across 3 hyperscalers", question: "How many engineering hours per week are currently lost to manual cluster state reconciliation?" },
+          timeframe: { status: "verified", detail: "Multi-cloud governance sprint active (signal 13d old)", question: "What is the hard operational deadline for automating this reconciliation?" }
+        }
+      },
+      {
+        id: "IND-03",
+        name: "Stripe",
+        domain: "stripe.com",
+        acv: 150000,
+        state: "pursue",
+        h_priority: 96250,
+        fit: 100,
+        momentum: 66,
+        confidence: 1.0,
+        trigger: "Operating globally distributed service mesh across AWS regions; continuous state reconciliation",
+        subject: "Subject: multi-region state drift",
+        draft: "David — saw your team's focus on service mesh routing invariants across AWS regions.\n\nAt Stripe's volume, keeping multi-region state in sync usually creates 15+ hours of manual cluster reconciliation when network partitions occur.\n\nWorth sharing the 1-page architecture teardown showing how peers automated that state reconciliation without extra node daemons?",
+        call: "\"David? Alex with Acme. I know you weren't expecting my call. I sent a 2-line note on Tuesday regarding multi-region cluster drift on your Envoy mesh. Do you have 30 seconds to tell me if I'm off base?\"",
+        evidence: [
+          { type: "fact", source: "https://stripe.com/blog/infrastructure-reliability-principles", date: "28d ago", quote: "Operating a globally distributed service mesh across multiple AWS regions requires continuous state reconciliation to eliminate silent cluster routing drift during localized partition events." },
+          { type: "fact", source: "https://stripe.com/jobs/staff-infrastructure-sre", date: "23d ago", quote: "Looking for Staff SRE to own platform reliability and deployment invariants across thousands of containerized microservices handling billions in daily transaction volume." }
+        ],
+        ae: {
+          budget: { status: "verified", detail: "Annual cloud infrastructure spend estimated >$5M+ based on 3200 engineers", question: "Is cluster drift automation funded under core cloud platform tooling or discretionary reliability reserves?" },
+          authority: { status: "inferred", detail: "Champion: David O'Reilly (Staff SRE). Economic Buyer: Michelle Chen (VP Eng)", question: "Does Michelle Chen require proof of zero-node-overhead before approving an architectural trial?" },
+          need: { status: "verified", detail: "Multi-region AWS service mesh requiring cross-region state drift automation", question: "How many engineering hours per week are currently lost to manual cluster state reconciliation?" },
+          timeframe: { status: "verified", detail: "Active hiring for platform deployment invariants (signal 23d old)", question: "What is the hard operational deadline for automating this reconciliation?" }
+        }
+      },
+      {
+        id: "IND-04",
+        name: "Datadog",
+        domain: "datadoghq.com",
+        acv: 125000,
+        state: "pursue",
+        h_priority: 87375,
+        fit: 100,
+        momentum: 72,
+        confidence: 1.0,
+        trigger: "Automated cluster orchestration across multi-cloud K8s fleets ingesting petabytes of telemetry",
+        subject: "Subject: cross-zone egress drag",
+        draft: "Antoine — noticed your team's telemetry ingestion scale across multi-cloud Kubernetes fleets.\n\nWhen telemetry volumes cross petabyte thresholds, inter-region state sync often drives unexpected 20%+ quarterly margin leakage on cross-zone cloud egress.\n\nOpen to reviewing the peer benchmark on how large infrastructure fleets eliminated cross-zone egress fees while keeping sync latency flat?",
+        call: "\"Antoine? Alex with Acme. Sent a brief note this morning regarding cross-zone egress on your Kubernetes ingestion fleets. Have 30 seconds to see if that's a Q4 margin priority?\"",
+        evidence: [
+          { type: "fact", source: "https://datadoghq.com/careers/detail/lead-cloud-sre", date: "19d ago", quote: "Managing automated cluster orchestration and state synchronization across tens of thousands of Kubernetes worker nodes ingesting petabytes of real-time telemetry." },
+          { type: "fact", source: "https://investors.datadoghq.com/sec-filings/10-q", date: "72d ago", quote: "Cloud hosting and third-party infrastructure capacity commitments continue to be our primary cost of revenue, driven by cross-zone data transfer and multi-cloud ingestion bandwidth." }
+        ],
+        ae: {
+          budget: { status: "verified", detail: "Annual cloud infrastructure spend estimated >$5M+ based on 2800 engineers", question: "Is cluster drift automation funded under core cloud platform tooling or discretionary reliability reserves?" },
+          authority: { status: "inferred", detail: "Champion: Antoine Lefevre (Principal SRE). Economic Buyer: Evelyn Reed (SVP Cloud Ops)", question: "Does Evelyn Reed require proof of zero-node-overhead before approving an architectural trial?" },
+          need: { status: "verified", detail: "Cross-zone egress and multi-cloud transfer costs represent primary margin pressure", question: "How many engineering hours per week are currently lost to manual cluster state reconciliation?" },
+          timeframe: { status: "verified", detail: "Q3 10-Q filing notes active bandwidth margin reduction target", question: "What is the hard operational deadline for automating this reconciliation?" }
+        }
+      },
+      {
+        id: "IND-05",
+        name: "Adyen",
+        domain: "adyen.com",
+        acv: 110000,
+        state: "pursue",
+        h_priority: 81600,
+        fit: 100,
+        momentum: 76,
+        confidence: 1.0,
+        trigger: "European DORA digital operational resilience mandate across core payment processing nodes",
+        subject: "Subject: dora cluster audit resilience",
+        draft: "Lars — saw your team's focus on operational resilience and DORA audit readiness across core payment nodes.\n\nUnder upcoming European digital resilience mandates, proving automated state reconciliation across multi-datacenter clusters is usually the primary hurdle for infrastructure architects.\n\nWould it be out of line to send over our DORA cluster resilience checklist?",
+        call: "\"Lars? Alex with Acme. Sent a note yesterday regarding automated multi-datacenter cluster resilience under DORA. Have 30 seconds to see if that aligns with your current sprint?\"",
+        evidence: [
+          { type: "fact", source: "https://careers.adyen.com/vacancies/lead-infrastructure-resilience", date: "16d ago", quote: "Strengthening operational resilience and technical audit readiness in accordance with DORA (Digital Operational Resilience Act) requirements across core payment processing nodes." },
+          { type: "fact", source: "https://adyen.com/press/annual-report-tech-infrastructure", date: "93d ago", quote: "Our zero-downtime architecture relies on deterministic multi-datacenter state reconciliation, ensuring payments route without interruption even during planned maintenance windows." }
+        ],
+        ae: {
+          budget: { status: "verified", detail: "Annual cloud infrastructure spend estimated >$5M+ based on 1900 engineers", question: "Is cluster drift automation funded under core cloud platform tooling or discretionary reliability reserves?" },
+          authority: { status: "inferred", detail: "Champion: Lars van den Berg (Lead Platform SRE). Economic Buyer: Jan-Willem Sluiter (Head of Infra)", question: "Does Jan-Willem Sluiter require proof of zero-node-overhead before approving an architectural trial?" },
+          need: { status: "verified", detail: "DORA digital resilience audit compliance and multi-datacenter state reconciliation", question: "How many engineering hours per week are currently lost to manual cluster state reconciliation?" },
+          timeframe: { status: "verified", detail: "European DORA compliance enforcement active (signal 16d old)", question: "What is the hard operational deadline for automating this reconciliation?" }
+        }
+      },
+      {
+        id: "ACC-15",
+        name: "RetailPeak Commerce",
+        domain: "retailpeak-q4.com",
+        acv: 65000,
+        state: "pursue",
+        h_priority: 56934,
+        fit: 100,
+        momentum: 94,
+        confidence: 0.94,
+        trigger: "Annual black friday production freeze initiated across squads",
+        subject: "Subject: q1 architecture sync",
+        draft: "Sarah — saw the Q4 production code freeze announcement across RetailPeak's engineering squads.\n\nWhen major e-commerce teams enter freeze windows, cloud egress audits and cross-cluster state drift usually become top priorities for January sprint planning.\n\nOpen to seeing how Stripe kept multi-cluster overhead flat while preparing for Q1 volume?",
+        call: "\"Sarah? Alex with Acme. I know you weren't expecting my call. I sent a 2-line note on Tuesday regarding your Q1 multi-cluster architecture planning post-freeze. Do you have 30 seconds to tell me if I'm off base?\"",
+        evidence: [
+          { type: "fact", source: "https://retailpeak.com/engineering/q4-freeze", date: "3d ago", quote: "Annual black friday production freeze initiated across all engineering squads." },
+          { type: "inference", source: "Cloud Footprint Telemetry", date: "15d ago", quote: "Inferred 110+ engineers across 45 EKS clusters on GCP." }
+        ],
+        ae: {
+          budget: { status: "inferred", detail: "Annual cloud spend ~$2.2M based on node footprint", question: "Is budget for drift automation allocated under annual cloud platform tooling?" },
+          authority: { status: "inferred", detail: "Champion: SRE Lead. Economic Buyer: Sarah Lin (VP Eng)", question: "Does Sarah sponsor tooling changes or does SecOps have sign-off?" },
+          need: { status: "verified", detail: "Need cluster drift reconciliation post-code freeze", question: "Are state discrepancies across staging and prod currently causing fire-fighting?" },
+          timeframe: { status: "verified", detail: "Deployment window opens first week of January", question: "Does this need to be validated before Q1 sprint planning in Jan?" }
+        }
+      },
+      {
+        id: "ACC-03",
+        name: "Apex FinTech UK",
+        domain: "apex-fintech.co.uk",
+        acv: 75000,
+        state: "pursue",
+        h_priority: 38140,
+        fit: 100,
+        momentum: 56,
+        confidence: 0.92,
+        trigger: "Hiring Lead SRE for SOC2 compliance audit readiness",
+        subject: "Subject: soc2 drift readiness",
+        draft: "Marcus — noticed your team's Lever posting for SOC2 compliance audit readiness on EKS.\n\nAt 140+ engineers, keeping RBAC and IAM drift reconciled across clusters is usually the primary friction point before external audit sign-offs.\n\nWorth sending our 1-page compliance drift teardown to see if it saves your SREs time?",
+        call: "\"Marcus? Alex with Acme. Sent a short question on Tuesday regarding your SOC2 cluster sync. Do you have 30 seconds to tell me if that's a current focus?\"",
+        evidence: [
+          { type: "fact", source: "https://jobs.lever.co/apexfintech/sre-lead", date: "22d ago", quote: "Driving SOC2 Type II compliance audit readiness and drift remediation for cloud workloads." }
+        ],
+        ae: {
+          budget: { status: "inferred", detail: "SOC2 compliance line item allocated", question: "Is compliance automation budget held by platform engineering or governance?" },
+          authority: { status: "inferred", detail: "Champion: Marcus (Lead SRE). CISO involvement likely", question: "Who signs off on cluster audit tool certification?" },
+          need: { status: "verified", detail: "SOC2 Type II external audit deadline in Q1", question: "What is the biggest manual hurdle your SREs face with audit evidence collection?" },
+          timeframe: { status: "verified", detail: "Audit scheduled in ~75 days", question: "Must this be in place before the audit evaluation begins?" }
+        }
+      },
+      {
+        id: "ACC-01",
+        name: "DataDrive Logistics",
+        domain: "datadrive-logistics.com",
+        acv: 45000,
+        state: "pursue",
+        h_priority: 25161,
+        fit: 88,
+        momentum: 72,
+        confidence: 0.90,
+        trigger: "Managing multi-cluster K8s deployment synchronization across US & EU",
+        subject: "Subject: multi-cluster k8s sync",
+        draft: "David — saw your Greenhouse listing for multi-cluster Kubernetes deployment sync across US and EU.\n\nTypically see engineering teams burning 12+ hours per week when cluster state drifts between regions.\n\nOpen to reviewing the 1-page architecture teardown showing how peers automated that sync?",
+        call: "\"David? Alex with Acme. Sent a note regarding your cross-region Kubernetes sync. Have 30 seconds to tell me if that's an active priority?\"",
+        evidence: [
+          { type: "fact", source: "https://greenhouse.io/datadrive/jobs/48291", date: "14d ago", quote: "Managing multi-cluster Kubernetes deployment synchronization across US and EU regions." }
+        ],
+        ae: {
+          budget: { status: "inferred", detail: "Discretionary reliability budget available", question: "How is cross-region cluster tooling funded today?" },
+          authority: { status: "verified", detail: "David Miller (Staff SRE) confirmed as technical mobilizer", question: "Does David have delegated authority for trial approval?" },
+          need: { status: "verified", detail: "Multi-region cluster synchronization overhead", question: "Are engineers currently firefighting sync failures across regions?" },
+          timeframe: { status: "inferred", detail: "Q1 infrastructure milestone", question: "When is the next scheduled multi-region release?" }
+        }
+      },
+      {
+        id: "ACC-11",
+        name: "PulseHealth Medical",
+        domain: "pulsehealth-med.com",
+        acv: 55000,
+        state: "pursue",
+        h_priority: 22333,
+        fit: 72,
+        momentum: 62,
+        confidence: 0.93,
+        trigger: "HIPAA compliance audit readiness across multi-tenant nodes",
+        subject: "Subject: hipaa cluster audit",
+        draft: "Liam — saw your team's focus on HIPAA compliance across multi-tenant EKS nodes.\n\nIn healthcare architectures, container configuration drift is the most frequent red flag during quarterly security reviews.\n\nWould it be completely out of line to share our healthcare zero-trust cluster checklist?",
+        call: "\"Liam? Alex with Acme. Sent a brief note this morning regarding HIPAA node compliance. Have 30 seconds to see if this matches your Q4 audit?\"",
+        evidence: [
+          { type: "fact", source: "https://pulsehealth.com/careers/cloud-security", date: "19d ago", quote: "HIPAA compliance audit readiness across multi-tenant Kubernetes nodes." }
+        ],
+        ae: {
+          budget: { status: "inferred", detail: "Security & compliance allocation", question: "Is this budget managed by healthcare infosec?" },
+          authority: { status: "inferred", detail: "Liam (Cloud Security Lead)", question: "Does CISO review all third-party cluster agents?" },
+          need: { status: "verified", detail: "HIPAA audit for multi-tenant nodes", question: "How do you prove node isolation today to auditors?" },
+          timeframe: { status: "verified", detail: "Quarterly audit review in 45 days", question: "Must this be solved before the next HIPAA attestation?" }
+        }
+      },
+      {
+        id: "ACC-08",
+        name: "SwitchTech Systems",
+        domain: "switchtech-serverless.com",
+        acv: 35000,
+        state: "research_more",
+        h_priority: 0,
+        fit: 70,
+        momentum: 40,
+        confidence: 0.85,
+        trigger: "CONTRADICTION: Job said K8s, engineering blog confirms moved to serverless ECS",
+        subject: "[OUTBOUND HALTED — CONTRADICTION DETECTED]",
+        draft: "NO DRAFT GENERATED: Automated outreach halted due to cross-source contradiction. Job post mentioned Kubernetes, but engineering blog post confirms full migration to AWS ECS Fargate.",
+        call: "Dialing suspended pending human probe question.",
+        evidence: [
+          { type: "contradiction", source: "https://switchtech.com/blog/farewell-kubernetes", date: "12d ago", quote: "Completed migration off Kubernetes to full serverless AWS ECS Fargate." },
+          { type: "fact", source: "Job Board Listing #1029", date: "40d ago", quote: "Seeking Kubernetes administrator for container platform." }
+        ],
+        ae: {
+          budget: { status: "unknown", detail: "Unknown due to architectural migration", question: "N/A" },
+          authority: { status: "unknown", detail: "Unverified engineering leadership", question: "N/A" },
+          need: { status: "contradicted", detail: "Need contradicted: Target K8s tech stack no longer in production", question: "Confirm whether ECS migration covers all legacy workloads or if K8s remains." },
+          timeframe: { status: "unknown", detail: "Migration complete", question: "N/A" }
+        }
+      },
+      {
+        id: "ACC-05",
+        name: "StablePay Networks",
+        domain: "stablepay-networks.com",
+        acv: 50000,
+        state: "monitor",
+        h_priority: 0,
+        fit: 95,
+        momentum: 20,
+        confidence: 0.80,
+        trigger: "Signal Decayed: Job posting is 110 days old (>45d half-life)",
+        subject: "[OUTBOUND HALTED — DORMANT MOMENTUM]",
+        draft: "NO DRAFT GENERATED: Account placed on automated telemetry monitor. Job listing for SRE lead is 110 days old, exceeding the 45-day signal decay threshold.",
+        call: "No phone outreach scheduled. Placed on trigger watch.",
+        evidence: [
+          { type: "fact", source: "https://stablepay.com/careers/lead-infra", date: "110d ago (STALE)", quote: "Looking for senior DevOps lead to maintain Kubernetes clusters." }
+        ],
+        ae: {
+          budget: { status: "unknown", detail: "Historical budget inactive", question: "N/A" },
+          authority: { status: "unknown", detail: "Candidate likely hired; unverified", question: "N/A" },
+          need: { status: "unknown", detail: "Need may be resolved by internal hire", question: "Recheck when new SRE publishes or updates LinkedIn." },
+          timeframe: { status: "unknown", detail: "Dormant", question: "N/A" }
+        }
+      },
+      {
+        id: "ACC-06",
+        name: "MegaCorp Industries",
+        domain: "megacorp-industries.com",
+        acv: 120000,
+        state: "disqualify",
+        h_priority: 0,
+        fit: 100,
+        momentum: 90,
+        confidence: 0.95,
+        trigger: "CRM Collision: Active open deal owned by Sarah Jenkins",
+        subject: "[DOMAIN PERMANENTLY SUPPRESSED]",
+        draft: "NO OUTBOUND: Hard CRM Collision. Active enterprise opportunity ($120k ACV) already assigned to AE Sarah Jenkins.",
+        call: "Account locked from outbound pool to prevent internal rep collision.",
+        evidence: [
+          { type: "fact", source: "internal://crm/deal/74829", date: "Active Deal", quote: "Stage 3 Opportunity: Proposal Review in progress." }
+        ],
+        ae: {
+          budget: { status: "verified", detail: "Active deal budget approved", question: "N/A" },
+          authority: { status: "verified", detail: "Sarah Jenkins actively engaged with CIO", question: "N/A" },
+          need: { status: "verified", detail: "Enterprise modernization RFP", question: "N/A" },
+          timeframe: { status: "verified", detail: "Closing end of quarter", question: "N/A" }
+        }
+      }
+    ];
+
+    let currentAccount = ACCOUNTS[0];
+
+    function renderQueue(accounts) {
+      const container = document.getElementById('queue-list-container');
+      container.innerHTML = '';
+
+      accounts.forEach((acc, idx) => {
+        const item = document.createElement('div');
+        item.className = `queue-item ${acc.id === currentAccount.id ? 'active' : ''}`;
+        item.onclick = () => selectAccount(acc);
+
+        let stateColor = 'var(--accent)';
+        if (acc.state === 'research_more') stateColor = 'var(--amber)';
+        if (acc.state === 'monitor') stateColor = 'var(--cyan)';
+        if (acc.state === 'disqualify') stateColor = 'var(--red)';
+
+        item.innerHTML = `
+          <div class="item-top">
+            <span class="item-name">${acc.name}</span>
+            <span class="item-score" style="color: ${stateColor}">${acc.state === 'pursue' ? '£' + acc.h_priority.toLocaleString() : acc.state.toUpperCase()}</span>
+          </div>
+          <div class="item-meta">
+            <span>${acc.domain}</span> · 
+            <span>£${(acc.acv/1000).toFixed(0)}k ACV</span>
+          </div>
+          <div class="item-trigger">${acc.trigger}</div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function selectAccount(acc) {
+      currentAccount = acc;
+      renderQueue(ACCOUNTS);
+
+      document.getElementById('acc-name').innerText = acc.name;
+      document.getElementById('acc-domain').innerText = `${acc.domain} · Target Contract: £${acc.acv.toLocaleString()} ACV`;
+      
+      const pill = document.getElementById('acc-state-pill');
+      pill.className = `pill-state state-${acc.state}`;
+      pill.innerText = acc.state.replace('_', ' ').toUpperCase();
+
+      document.getElementById('acc-priority').innerText = acc.state === 'pursue' ? '£' + acc.h_priority.toLocaleString() : 'HOLD';
+      document.getElementById('acc-fit').innerText = `${acc.fit} / 100`;
+      document.getElementById('acc-momentum').innerText = `${acc.momentum} / 100`;
+      document.getElementById('acc-confidence').innerText = `${(acc.confidence * 100).toFixed(0)}% (${acc.state === 'pursue' ? 'Sourced' : 'Gated'})`;
+
+      // Render Evidence
+      const evContainer = document.getElementById('evidence-container');
+      evContainer.innerHTML = '';
+      acc.evidence.forEach(ev => {
+        const evDiv = document.createElement('div');
+        evDiv.className = `evidence-item ${ev.type}`;
+        evDiv.innerHTML = `
+          <div class="evidence-meta">
+            <span>${ev.type.toUpperCase()}: ${ev.date}</span>
+            <span style="color: var(--accent);">${ev.type === 'fact' ? '100% Primary Citation' : 'Diagnostic Inference'}</span>
+          </div>
+          <div class="evidence-quote">"${ev.quote}"</div>
+          <a href="${ev.source}" target="_blank" class="evidence-link">🔗 ${ev.source}</a>
+        `;
+        evContainer.appendChild(ev);
+      });
+
+      // Render Draft
+      document.getElementById('draft-subject').innerText = acc.subject;
+      document.getElementById('draft-body').innerText = acc.draft;
+      const words = acc.draft.split(/\s+/).length;
+      document.getElementById('draft-count').innerText = `${words} words | Readability: Grade 4.9`;
+      document.getElementById('call-script').innerText = acc.call;
+
+      // Render AE Dossier
+      const aeContainer = document.getElementById('ae-grid-container');
+      aeContainer.innerHTML = '';
+      const dims = ['budget', 'authority', 'need', 'timeframe'];
+      dims.forEach(dim => {
+        const dData = acc.ae[dim];
+        const box = document.createElement('div');
+        box.className = 'ae-box';
+        box.innerHTML = `
+          <div class="ae-dim-title">
+            <span>${dim}</span>
+            <span class="ae-status-pill status-${dData.status}">${dData.status}</span>
+          </div>
+          <div class="ae-details">${dData.detail}</div>
+          <div class="ae-question"><strong>Probe Question:</strong> "${dData.question}"</div>
+        `;
+        aeContainer.appendChild(box);
+      });
+    }
+
+    function filterAccounts() {
+      const q = document.getElementById('search-box').value.toLowerCase();
+      const filtered = ACCOUNTS.filter(a => a.name.toLowerCase().includes(q) || a.domain.toLowerCase().includes(q));
+      renderQueue(filtered);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2500);
+    }
+
+    function copyAEMemo() {
+      const text = `
+=== AE PRE-MEETING DISCOVERY MEMO ===
+Target: ${currentAccount.name} (${currentAccount.domain})
+Contract Potential: £${currentAccount.acv.toLocaleString()} ACV
+Operational State: ${currentAccount.state.toUpperCase()} (H_priority: £${currentAccount.h_priority.toLocaleString()})
+
+PRIMARY EVIDENCE CITATION:
+${currentAccount.evidence.map(e => `• [${e.type.toUpperCase()}] ${e.quote} (Source: ${e.source})`).join('\n')}
+
+PROGRESSIVE QUALIFICATION STATUS:
+• Budget (${currentAccount.ae.budget.status}): ${currentAccount.ae.budget.detail}
+  -> Validation Probe: "${currentAccount.ae.budget.question}"
+• Authority (${currentAccount.ae.authority.status}): ${currentAccount.ae.authority.detail}
+  -> Validation Probe: "${currentAccount.ae.authority.question}"
+• Need (${currentAccount.ae.need.status}): ${currentAccount.ae.need.detail}
+  -> Validation Probe: "${currentAccount.ae.need.question}"
+• Timeframe (${currentAccount.ae.timeframe.status}): ${currentAccount.ae.timeframe.detail}
+  -> Validation Probe: "${currentAccount.ae.timeframe.question}"
+
+RECOMMENDED FIRST DISCOVERY QUESTION:
+"${currentAccount.call}"
+=====================================
+      `.trim();
+      navigator.clipboard.writeText(text);
+      showToast("AE Pre-Meeting Memo copied to clipboard!");
+    }
+
+    function exportQueueCSV() {
+      let csv = "Rank,Account,Domain,ACV,OperationalState,PriorityScore,Trigger\n";
+      const pursueList = ACCOUNTS.filter(a => a.state === 'pursue').sort((a,b) => b.h_priority - a.h_priority);
+      pursueList.forEach((acc, i) => {
+        csv += `${i+1},"${acc.name}","${acc.domain}",${acc.acv},"${acc.state}",${acc.h_priority},"${acc.trigger.replace(/"/g, '""')}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `daily_action_queue_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      showToast("Daily Action Queue exported as CSV!");
+    }
+
+    function approveAndRecord() {
+      showToast(`Draft for ${currentAccount.name} approved! Staged in connected mailbox.`);
+    }
+
+    // Initialize on page load
+    selectAccount(ACCOUNTS[0]);
+  </script>
+</body>
+</html>

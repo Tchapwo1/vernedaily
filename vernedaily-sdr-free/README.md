@@ -1,15 +1,15 @@
-# VerneDaily Free SDR Co-Pilot ⚡
+# VerneDaily Free SDR Intelligence Co-Pilot ⚡
 
-> **Free, open-core consultative prospecting tool for individual B2B SDRs.**  
-> Cut 45 minutes of account research down to 30 seconds. Write 75-word consultative SPIN emails that actually get replies.
+> **Free, open-core account intelligence tool for individual B2B SDRs.**  
+> Cut 45 minutes of account research down to 30 seconds. Formulate 75-word diagnostic emails and phone battlecards backed by audited evidence.
 
 ---
 
 ## ⚡ What is VerneDaily Free?
 VerneDaily Free is an open tool designed for individual sales development representatives (SDRs/BDRs). It eliminates manual research, writer's block, and awkward cold calls by autonomously generating:
-- **75-Word SPIN Emails:** Based on Neil Rackham's SPIN Selling and Chris Voss's tactical empathy. Strictly under 75 words, 5th-grade readability, zero marketing fluff.
-- **15-Second Cold Call Hooks:** Pattern-interrupt openers and 20-second voicemails.
-- **Objection Handling Matrices:** Real-time responses to common pushbacks.
+- **75-Word Diagnostic Emails:** Based on consultative problem framing and loss aversion. Strictly under 75 words, 5th-grade readability, zero marketing fluff.
+- **15-Second Phone Battlecards:** Pattern-interrupt openers and 20-second voicemails.
+- **Shareable AE Pre-Meeting Memos:** Evidence citations, progressive qualification gaps, and recommended AE discovery questions to take into 1-on-1s.
 
 Zero company IT approval required. Zero credit card. 100% free forever for individual reps.
 
@@ -20,7 +20,7 @@ Zero company IT approval required. Zero credit card. 100% free forever for indiv
 Run VerneDaily on any target domain:
 ```bash
 # Example invocation
-vernedaily research stripe.com --title "VP of Infrastructure"
+vernedaily research cloudscale.io --title "Lead SRE"
 ```
 
 Or prompt your AI assistant with the skill installed:
@@ -28,12 +28,12 @@ Or prompt your AI assistant with the skill installed:
 
 ---
 
-## 🏢 Need Team Features? (VerneDaily God Mode)
-For sales leaders, RevOps, and SDR teams who need:
-- Automated 2-way CRM sync (Salesforce, HubSpot)
-- Multi-rep territory locking (prevent duplicate outreach)
-- Complete 6.8-person committee multi-threading state machine
-- Automated Bank Holiday & Seasonality pauses (UK/US/EMEA)
-- BANT SQA Handoff Dossiers for Account Executives
+## 🏢 Need Team Features? (VerneDaily Team Platform)
+For sales leaders, RevOps, and multi-rep pods who need:
+- Multi-rep territory conflict detection (prevent duplicate account outreach)
+- Dynamic stakeholder mapping & shared team account ledger
+- Timezone and contact-policy engine (statutory rules, frequency capping)
+- Continuous signal monitoring and signal decay alerts
+- Automated Progressive Qualification Dossiers for Account Executives
 
-👉 Visit **[www.vernedaily.xyz](https://www.vernedaily.xyz)** to explore VerneDaily God Mode.
+👉 Visit **[www.vernedaily.xyz](https://www.vernedaily.xyz)** to explore our **30-Day Paid Team Pilot** ($1,500 – $3,000/mo).

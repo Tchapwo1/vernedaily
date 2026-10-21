@@ -1,7 +1,7 @@
 # ==============================================================================
-# God Mode SaaS ABM SDR - Go-To-Market Configuration (gtm-config.yaml)
+# Evidence-Led Account Intelligence Engine - Go-To-Market Configuration (gtm-config.yaml)
 # ==============================================================================
-version: "1.0.0"
+version: "2.0.0"
 
 company:
   name: "Acme Cloud"
@@ -46,19 +46,19 @@ disqualifiers:
     - "Estimated annual ACV capacity below $10,000 floor"
 
 # ------------------------------------------------------------------------------
-# Buying Committee Topology & Pre-Computed SPIN Angles
+# Stakeholder Topology & Diagnostic Problem Angles
 # ------------------------------------------------------------------------------
-buying_committee:
+stakeholder_profiles:
   champion:
     target_titles:
       - "Staff Platform Engineer"
       - "Lead Site Reliability Engineer"
       - "Principal DevOps Engineer"
       - "Cloud Infrastructure Lead"
-    spin_angles:
+    diagnostic_angles:
       latent_problem: "Silent configuration drift across multi-region Kubernetes clusters."
       quantified_implication: "Triggers on-call firefighting, delays sprint velocity, and breaches internal SLA targets."
-      need_payoff_cta: "Would you be open to seeing the 1-page architecture delta on how FinTech X automated cross-cluster sync?"
+      diagnostic_cta: "Would you be open to comparing notes on how peer engineering teams automate cross-cluster sync?"
     trojan_asset: "1-Page Cross-Cluster Drift Remediation Architecture Teardown"
 
   economic_buyer:
@@ -67,10 +67,10 @@ buying_committee:
       - "VP of Engineering"
       - "Chief Technology Officer"
       - "Chief Information Officer"
-    spin_angles:
+    diagnostic_angles:
       latent_problem: "Unmonitored cross-zone egress costs and audit compliance exposure."
       quantified_implication: "Causes unexpected $15k-$40k quarterly margin leakage and stalls SOC 2 Type II audit readiness by 6+ weeks."
-      need_payoff_cta: "Would it be entirely unreasonable to share our cloud infrastructure peer benchmark report?"
+      diagnostic_cta: "Would it make sense to share our cloud infrastructure peer benchmark report?"
     trojan_asset: "Executive Peer Benchmark: Eliminating Cloud Egress Margin Contraction"
 
   technical_evaluator:
@@ -78,10 +78,10 @@ buying_committee:
       - "Director of Information Security"
       - "Head of InfoSec"
       - "Chief Information Security Officer"
-    spin_angles:
+    diagnostic_angles:
       latent_problem: "Inconsistent RBAC and IAM policy enforcement across distributed clusters."
       quantified_implication: "Creates critical compliance failure points during enterprise customer security audits."
-      need_payoff_cta: "Open to reviewing the compliance audit trail specification?"
+      diagnostic_cta: "Open to reviewing our zero-trust compliance audit specification?"
     trojan_asset: "Automated Zero-Trust RBAC Policy Enforcement Specification"
 
 # ------------------------------------------------------------------------------
@@ -99,16 +99,25 @@ competitor_matrix:
     differentiation_hook: "Native multi-cloud policy synchronization across AWS, GCP, and Azure."
 
 # ------------------------------------------------------------------------------
-# BANT Appointment Handoff Requirements
+# Progressive Qualification Handoff Requirements
 # ------------------------------------------------------------------------------
-bant_handoff_rules:
-  budget_floor_verified: true
-  min_acv_usd: 10000
-  authority_confirmed: true # Champion + Econ Buyer aligned
-  need_verified_within_days: 60
-  timeframe_max_months: 6
+progressive_qualification_rules:
+  economic_floor_usd: 10000
+  dimensions:
+    budget:
+      allowed_states: ["verified", "inferred", "unknown", "contradicted"]
+      require_validation_question_if: ["inferred", "unknown"]
+    authority:
+      allowed_states: ["verified", "inferred", "unknown", "contradicted"]
+      require_validation_question_if: ["inferred", "unknown"]
+    need:
+      allowed_states: ["verified", "inferred", "unknown", "contradicted"]
+      require_validation_question_if: ["inferred", "unknown"]
+    timeframe:
+      allowed_states: ["verified", "inferred", "unknown", "contradicted"]
+      require_validation_question_if: ["inferred", "unknown"]
   mandatory_dossier_fields:
     - "estimated_acv"
-    - "attendees_and_roles"
-    - "compelling_event"
-    - "target_rollout_timeline"
+    - "decision_gate_state"
+    - "qualification_dimensions"
+    - "recommended_ae_discovery_plan"

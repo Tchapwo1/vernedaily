@@ -1,0 +1,432 @@
+{
+  "execution_timestamp": "2026-10-20T21:44:56.305Z",
+  "total_accounts_processed": 30,
+  "breakdown": {
+    "pursue": 20,
+    "research_more": 2,
+    "monitor": 2,
+    "disqualify": 6
+  },
+  "accounts_ranked": [
+    {
+      "domain": "retail-omni.com",
+      "company_name": "OmniRetail",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 47630,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Rachel Green",
+        "title": "Director of Platform Engineering",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "vmware-division.com",
+      "company_name": "VMware Division",
+      "operational_state": "research_more",
+      "state_reason": "M&A Gating: Check Broadcom centralized procurement rules.",
+      "action_priority_score": 47630,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Paul Maritz",
+        "title": "Director of Systems Engineering",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "downsize-tech.io",
+      "company_name": "Downsize Tech",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 47630,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Chloe Davis",
+        "title": "VP of Infrastructure",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "retailer-global.co.uk",
+      "company_name": "Global Retail UK",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 47630,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Nigel Smith",
+        "title": "Head of Cloud Operations",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "medicare-health.org",
+      "company_name": "Medicare Health",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 47630,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Dr. Lisa Cuddy",
+        "title": "Chief Information Officer",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 46
+    },
+    {
+      "domain": "wallstreet-brokerage.com",
+      "company_name": "WallStreet Brokerage",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 47630,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Gordon Gekko",
+        "title": "Head of Algorithmic Infrastructure",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "aero-defense.mil",
+      "company_name": "Aero Defense",
+      "operational_state": "disqualify",
+      "state_reason": "Regulatory Incompatibility: Requires FedRAMP High certification.",
+      "action_priority_score": 47630,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Gen. Jack O'Neill",
+        "title": "Director of Cyber Defense",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 46
+    },
+    {
+      "domain": "budget-freeze-corp.com",
+      "company_name": "Budget Freeze Corp",
+      "operational_state": "disqualify",
+      "state_reason": "Contradicted Budget: Multi-year company-wide IT spending freeze.",
+      "action_priority_score": 47630,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Logan Roy",
+        "title": "Chief Technology Officer",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "cloud-enterprise.com",
+      "company_name": "Cloud Enterprise",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 47630,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Kendall Roy",
+        "title": "VP Cloud Platform",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "chicago-infra.com",
+      "company_name": "Chicago Infra",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 47630,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Michael Jordan",
+        "title": "VP Infrastructure",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "public-saas-corp.com",
+      "company_name": "Public SaaS Corp",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 47630,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Satya Nadella",
+        "title": "EVP Engineering",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "finapex-bank.com",
+      "company_name": "FinApex Bank",
+      "operational_state": "research_more",
+      "state_reason": "Ambiguous infrastructure telemetry; verify AWS vs OpenStack workloads.",
+      "action_priority_score": 26244,
+      "estimated_acv": 85000,
+      "contact": {
+        "name": "Elena Rostova",
+        "title": "Head of Infrastructure Architecture",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "cloudscale.io",
+      "company_name": "Cloudscale",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Marcus Vance",
+        "title": "Lead Site Reliability Engineer",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "munich-cloud.de",
+      "company_name": "Munich Cloud",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Klaus Weber",
+        "title": "Principal Infrastructure Engineer",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "scale-infra.io",
+      "company_name": "ScaleInfra",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Marcus Vance",
+        "title": "Lead Platform Architect",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "hyper-scale.net",
+      "company_name": "HyperScale",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "James Wilson",
+        "title": "VP of Cloud Infrastructure",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "adversarial-ai.com",
+      "company_name": "Adversarial AI",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Dr. Alan Turing",
+        "title": "Lead MLOps Engineer",
+        "role": "champion"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "ghost-contact.io",
+      "company_name": "GhostContact",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Alex Mercer",
+        "title": "Director of InfoSec",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "offline-test.com",
+      "company_name": "Offline Systems",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Brian Cox",
+        "title": "Staff SRE",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "enterprise-ops.com",
+      "company_name": "Enterprise Ops",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Marcus Vance",
+        "title": "Lead SRE",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "newco-energy.com",
+      "company_name": "NewCo Energy",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Thomas Edison",
+        "title": "Head of Platform",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "serverless-pivot.io",
+      "company_name": "Serverless Pivot",
+      "operational_state": "disqualify",
+      "state_reason": "Contradicted Need: Migrated from Kubernetes to AWS ECS serverless.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Neo Anderson",
+        "title": "VP Engineering",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "locked-down-systems.com",
+      "company_name": "LockedDown Systems",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Peter Parker",
+        "title": "Junior SRE",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "hostile-legal.com",
+      "company_name": "Hostile Legal",
+      "operational_state": "disqualify",
+      "state_reason": "Hard Stop: Cease and desist / permanent domain suppression.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Harvey Specter",
+        "title": "Managing Partner",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "sydney-tech.com.au",
+      "company_name": "Sydney Tech",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Bruce Wayne",
+        "title": "Staff DevOps Engineer",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "tokyo-platform.co.jp",
+      "company_name": "Tokyo Platform",
+      "operational_state": "pursue",
+      "state_reason": "Strong ICP fit and timely friction trigger verified.",
+      "action_priority_score": 19430,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Kenzo Tange",
+        "title": "Director of Cloud Engineering",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "dataprime-analytics.com",
+      "company_name": "DataPrime",
+      "operational_state": "monitor",
+      "state_reason": "Dormant buying momentum or long-term competitor contract in place.",
+      "action_priority_score": 6786,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "David Chen",
+        "title": "VP of Engineering",
+        "role": "economic_buyer"
+      },
+      "draft_word_count": 45
+    },
+    {
+      "domain": "competitor-locked.com",
+      "company_name": "Competitor Locked",
+      "operational_state": "monitor",
+      "state_reason": "Dormant buying momentum or long-term competitor contract in place.",
+      "action_priority_score": 6786,
+      "estimated_acv": 35000,
+      "contact": {
+        "name": "Elliot Alderson",
+        "title": "Lead DevOps Engineer",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "micro-saas.co",
+      "company_name": "MicroSaaS",
+      "operational_state": "disqualify",
+      "state_reason": "Fails $10,000 ACV economic viability floor / zero engineering team.",
+      "action_priority_score": -678,
+      "estimated_acv": 2400,
+      "contact": {
+        "name": "Sam Reed",
+        "title": "Founder",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    },
+    {
+      "domain": "capital-holdings-asset.com",
+      "company_name": "Capital Holdings",
+      "operational_state": "disqualify",
+      "state_reason": "Fails $10,000 ACV economic viability floor / zero engineering team.",
+      "action_priority_score": -678,
+      "estimated_acv": 2400,
+      "contact": {
+        "name": "Arthur Dent",
+        "title": "Managing Partner",
+        "role": "champion"
+      },
+      "draft_word_count": 44
+    }
+  ]
+}

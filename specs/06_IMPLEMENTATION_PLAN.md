@@ -1,59 +1,68 @@
-# 🚀 Pillar 6: Implementation Plan & Milestones (PLAN) — God Mode SaaS ABM SDR
+# 🚀 Pillar 6: Implementation Plan & Milestones (PLAN) — Evidence-Led Account Intelligence & Pipeline Creation Engine
 
-## 1. Chronological Engineering Milestones
+## 1. Chronological Engineering Phases
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                          IMPLEMENTATION ROADMAP                             │
 │                                                                             │
-│  [MILESTONE 1] ──► [MILESTONE 2] ──► [MILESTONE 3] ──► [MILESTONE 4]        │
-│  Core Config &      Tri-Vector &      Omnichannel &    Backtesting &        │
-│  State Contracts   SPIN Engine       Calendar Engine  Production Pilot     │
+│  [PHASE 1: FOUNDATION] ──► [PHASE 2: VALIDATION] ──► [PHASE 3: PILOT] ──►  │
+│  Evidence Schema,           Backtest on Real          Free Skill Release & │
+│  Decision Gate & Scores     Account Baseline          30-Day Team Pilot    │
+│                                                                             │
+│  ─────────────────────────────────────────────────────────────────────────► │
+│  [PHASE 4: EXPANSION]                                                       │
+│  Continuous Signal Monitoring, Team CRM Sync & Outcome Calibration          │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### Milestone 1: GTM Configuration & State Ledger Foundation
-- **Goal**: Instantiate core schemas and configuration templates in the skill workspace.
+### Phase 1: Foundation (Hardening the Research & Decision Engine)
+- **Goal**: Establish strict epistemic contracts, progressive qualification logic, and the 4-state operational decision gate.
 - **Deliverables**:
-  - `gtm-config.yaml`: Populated with ICP definitions, ACV bands ($\ge \$10\text{k}$), personas, and hard disqualifiers.
-  - `Account_Ledger.json`: Persistent state contract for tracking account entities and multi-touch history.
-  - Update `saas-abm-sdr/SKILL.md` to reference the 6-pillar spec blueprint and new GTM config.
+  - `specs/01_PRD.md` & `specs/05_SCHEMA.md`: Standardize `Evidence_Assertion.schema.json`, `Account_Ledger.json`, and `Progressive_Qualification_Dossier.schema.json`.
+  - `saas-abm-sdr/references/account-scoring.md`: Implement Decoupled Tri-Vector Scorer + Action-Priority Metric ($V_{\text{expected}}$) with signal decay windows (45d, 90d, 120d, 180d).
+  - `contact-policy.json`: Standardize recipient working hours (08:30–17:30 local), statutory rules (GDPR/PECR/UWG), and account fatigue limits.
 - **Definition of Done (DoD)**:
-  - System parses `gtm-config.yaml` with schema validation; hard disqualifiers correctly reject ineligible test accounts.
+  - Schemas validate; accounts are deterministically committed to `Pursue`, `Research more`, `Monitor`, or `Disqualify`.
 
 ---
 
-### Milestone 2: Tri-Vector Scoring & Pre-Computed SPIN Engine
-- **Goal**: Upgrade account qualification and copy generation logic.
+### Phase 2: Validation (Empirical Accuracy Testing)
+- **Goal**: Compare the engine's intelligence and qualification against a human-reviewed baseline of historical enterprise accounts.
 - **Deliverables**:
-  - Refactor `saas-abm-sdr/references/account-scoring.md` into the Decoupled Tri-Vector Scorer (ICP Fit, Buying Priority, Epistemic Confidence).
-  - Refactor `saas-abm-sdr/references/outreach-playbook.md` into the Pre-Computed SPIN framework (Situation pre-researched, Problem + Implication emphasis, Need-Payoff / Voss CTAs).
-  - Implement the 75-word mobile ceiling and 5th-grade reading level enforcement.
+  - Build a curated evaluation set of 20 representative accounts: strong signals, weak signals, stale signals, contradictory evidence, and sub-$10k ACV accounts.
+  - Measure factual accuracy, quote verification rate, research speed, and false-positive trigger rates.
 - **Definition of Done (DoD)**:
-  - Generated email drafts are strictly under 75 words, contain zero lazy situation questions, and feature verified, dated implications.
+  - 100% of material assertions link to a verified primary source and verbatim quote.
+  - 0 ungrounded claims pass the evidence confidence gate.
+  - Sub-$10k ACV accounts are disqualified automatically.
 
 ---
 
-### Milestone 3: Omnichannel Sequence & Calendar / OOO Engine
-- **Goal**: Multi-channel cadence orchestration and temporal intelligence.
+### Phase 3: Commercial Pilot (Free Release & 30-Day Paid Team Pilot)
+- **Goal**: Test the bottom-up PLG loop and validate enterprise willingness to pay before building heavy CRM sync infrastructure.
 - **Deliverables**:
-  - Build `saas-abm-sdr/references/omnichannel-orchestrator.md` integrating LinkedIn, Email, and Phone battlecards.
-  - Implement `Holiday_Calendar.json` and geo-holiday resolution logic.
-  - Implement the Out-Of-Office (OOO) parser and auto-reschedule state machine.
+  - Package and publish `vernedaily-sdr-free` featuring the shareable **AE Pre-Meeting Memo**.
+  - Launch a structured **30-Day Paid Team Pilot** ($1,500 – $3,000/mo) with a single 5-rep sales team.
+  - Measure held-meeting conversion rate, Stage 1 to Stage 2 pipeline progression, and AE qualitative satisfaction against the team's historical baseline.
 - **Definition of Done (DoD)**:
-  - Sequences automatically pause on target bank holidays; simulated OOO emails extract return dates and update `Account_Ledger.json`.
+  - Participating sales reps report a >50% reduction in pre-call prep time.
+  - Account Executives validate that the Progressive Qualification Dossier improves first-call discovery quality.
 
 ---
 
-### Milestone 4: BANT Handoff Gate & Retrospective Calibration
-- **Goal**: AE calendar protection and empirical pipeline calibration.
+### Phase 4: Expansion (Collaborative Infrastructure & Continuous Monitoring)
+- **Goal**: Scale from validated pilot to recurring enterprise platform based on customer-validated bottlenecks.
 - **Deliverables**:
-  - Implement the SQA BANT verification gate and `BANT_Dossier.json` generator.
-  - Run retrospective test against 20 historical won, lost, and disqualified accounts to calibrate scoring weights and ensure zero false-positive meetings.
+  - Shared account memory and multi-rep territory collision locking.
+  - Deep two-way CRM sync (Salesforce/HubSpot) writing staged opportunities and activity logs.
+  - Continuous signal monitoring (automated alerts on new leadership hires, SEC filings, and job postings).
+  - Outcome learning loop: automatically calibrating trigger weights based on won/lost deal feedback.
 - **Definition of Done (DoD)**:
-  - All 20 historical acceptance test scenarios in `TEST-PLAN.md` pass with 100% compliance; no meeting is staged without confirmed BANT data.
+  - Multi-rep territory locking prevents duplicate outreach across reps.
+  - Realized pipeline attribution directly measures engine-generated opportunities.
 
 ---
 
@@ -61,9 +70,9 @@
 
 | Gate ID | Verification Test | Success Criteria |
 | :---: | :--- | :--- |
-| **G-01** | **Economic Floor Enforcement** | Account with estimated ACV $< \$10,000$ is flagged as Disqualified / Low Priority. |
-| **G-02** | **Epistemic Confidence Gate** | Account with $< 75\%$ confidence is locked from outbound until research completes. |
-| **G-03** | **75-Word Mobile Constraint** | 100% of generated email drafts pass regex check: $\text{word\_count} \le 75$. |
-| **G-04** | **Voss No-Oriented CTA** | Drafts conclude with interest-based or no-oriented questions; zero direct calendar links on Touch 1. |
-| **G-05** | **Holiday Freeze** | Accounts located in the UK pause outreach during UK Bank Holidays. |
-| **G-06** | **BANT SQA Verification** | Calendar invite blocked unless Budget, Authority, Need, and Timeframe ($\le 6$ mo) are documented. |
+| **G-01** | **Economic Floor Enforcement** | Account with estimated ACV $< \$10,000$ is flagged as Disqualified. |
+| **G-02** | **Evidence Provenance Gate** | Account with Confidence $< 70\%$ is routed to `Research more`; outreach is blocked. |
+| **G-03** | **Signal Decay Revalidation** | Triggers older than their decay window (e.g. Job posting $>45$d) trigger revalidation. |
+| **G-04** | **Uncertainty Decision Gate** | 100% of evaluated accounts land in `Pursue`, `Research more`, `Monitor`, or `Disqualify`. |
+| **G-05** | **Progressive Qualification Handoff** | Dossiers state Budget, Authority, Need, Timeframe as `verified`, `inferred`, `unknown`, or `contradicted` with AE probe questions. |
+| **G-06** | **Contact Policy Governance** | Outreach is restricted to 08:30–17:30 recipient local time; pauses on statutory public holidays. |

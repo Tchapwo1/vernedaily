@@ -1,0 +1,196 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "policy_version": "2026.2.2",
+  "policy_last_reviewed_at": "2026-10-21T01:45:00Z",
+  "review_cycle_days": 90,
+  "default_unknown_policy": "fail_closed_suppress_pending_human_review",
+  "title": "ContactPolicy",
+  "description": "Evidence-led contact policy governing timing, timezones, multi-tiered suppression scoping, OOO handling, channel-specific compliance, and versioned legal governance.",
+  "suppression_taxonomy": {
+    "account_level_permanent": {
+      "reasons": ["sanctioned_geography", "sub_10k_floor_disqualification", "hostile_cease_and_desist_domain", "permanent_crm_exclusion"],
+      "scope": "entire_domain_all_channels_all_reps"
+    },
+    "account_level_temporary_hold": {
+      "reasons": ["active_crm_deal_in_flight", "existing_customer_renewal_cycle", "q4_retail_code_freeze", "m_and_a_parent_procurement_hold"],
+      "scope": "entire_domain_all_channels",
+      "recheck_condition": "crm_stage_change_or_date_expiry"
+    },
+    "contact_level_opt_out": {
+      "reasons": ["individual_unsubscribed", "individual_requested_no_contact", "hard_bounced_email_left_company"],
+      "scope": "specific_contact_only_domain_remains_active_for_other_stakeholders"
+    },
+    "channel_specific_restriction": {
+      "reasons": ["uk_individual_subscriber_cold_email_blocked", "germany_uwg7_cold_electronic_direct_message_blocked"],
+      "scope": "restricted_channel_only_alternate_lawful_channels_remain_eligible"
+    }
+  },
+  "working_hours": {
+    "default_start_local": "08:30",
+    "default_end_local": "17:30",
+    "allowed_days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "optimal_windows": [
+      { "day": "Tuesday", "start_local": "09:00", "end_local": "11:30" },
+      { "day": "Tuesday", "start_local": "14:00", "end_local": "16:00" },
+      { "day": "Wednesday", "start_local": "09:00", "end_local": "11:30" },
+      { "day": "Wednesday", "start_local": "14:00", "end_local": "16:00" },
+      { "day": "Thursday", "start_local": "09:00", "end_local": "11:30" },
+      { "day": "Thursday", "start_local": "14:00", "end_local": "16:00" }
+    ],
+    "suppressed_windows": [
+      { "description": "Friday afternoon wind-down", "day": "Friday", "after_local": "13:00" },
+      { "description": "Monday morning inbox triage", "day": "Monday", "before_local": "10:30" },
+      { "description": "Weekend", "days": ["Saturday", "Sunday"] }
+    ]
+  },
+  "frequency_caps": {
+    "max_touches_per_contact_per_week": 2,
+    "max_touches_per_contact_per_cycle": 4,
+    "min_days_between_touches_same_contact": 3,
+    "max_concurrent_touches_per_account": 3,
+    "max_account_touches_per_day": 2,
+    "cooloff_period_days_on_no_response": 60,
+    "immediate_hard_stop_on_opt_out": true
+  },
+  "ooo_handling": {
+    "action_on_ooo_receipt": "pause_cadence_immediately",
+    "reschedule_buffer_business_days": 1,
+    "delegate_harvesting": {
+      "enabled": true,
+      "action": "ingest_named_delegate_as_provisional_stakeholder",
+      "verification_required_before_contact": true
+    }
+  },
+  "jurisdiction_compliance": {
+    "DE": {
+      "country": "Germany",
+      "statute": "UWG §7 (Unfair Competition Act) & BGH Jurisprudence",
+      "cold_email_policy": "strictly_prohibited_without_prior_explicit_consent",
+      "social_direct_message_policy": "prohibited_without_prior_explicit_consent",
+      "allowed_channels": ["verified_inbound_opt_in", "existing_contractual_relationship", "public_event_opt_in"],
+      "compliance_warning": "Under German UWG §7(2) No. 2 and Federal Court of Justice (BGH) case law, unsolicited commercial electronic direct marketing—including both cold email and unsolicited direct social messages (e.g. LinkedIn InMail)—without prior express consent (ausdrückliche Einwilligung) is unlawful and subject to cease-and-desist warnings (Abmahnung). Routing suppressed email to LinkedIn InMail is explicitly rejected as a compliance workaround.",
+      "action": "hard_suppress_all_unsolicited_electronic_outbound"
+    },
+    "GB": {
+      "country": "United Kingdom",
+      "statute": "PECR (Reg 22/23) & UK GDPR / Data Protection Act 2018",
+      "cold_email_policy": "corporate_subscriber_only_with_lia",
+      "subscriber_type_rules": {
+        "corporate_subscriber": {
+          "definition": "Limited companies (Ltd), Public limited companies (Plc), Limited Liability Partnerships (LLP), Scottish partnerships, and government bodies.",
+          "unsolicited_b2b_email_allowed": true,
+          "statutory_condition": "Must offer immediate, prominent opt-out in every message; sender identity must be transparent and non-deceptive."
+        },
+        "individual_subscriber": {
+          "definition": "Sole traders and general partnerships in England, Wales, and Northern Ireland.",
+          "unsolicited_b2b_email_allowed": false,
+          "statutory_condition": "Treated as individuals under PECR Reg 22; prior opt-in consent is strictly required before sending unsolicited marketing emails."
+        }
+      },
+      "gdpr_lawful_basis": {
+        "basis": "Legitimate Interests (UK GDPR Article 6(1)(f))",
+        "mandatory_checks": [
+          "Purpose Test: Legitimate commercial prospecting interest documented.",
+          "Necessity Test: Contacting professional business email is strictly necessary and proportionate.",
+          "Balancing Test: Rights and freedoms of the data subject are not overridden; reasonable expectation of B2B contact in their professional capacity.",
+          "Data minimization: Only work email, professional title, and company domain processed."
+        ]
+      },
+      "requirements": [
+        "Recipient must be verified as a corporate subscriber (Ltd, Plc, LLP) before cold email emission.",
+        "Sole traders and unincorporated partnerships must be suppressed from cold email cadences unless prior consent exists.",
+        "Outreach must be directly relevant to professional role.",
+        "One-click opt-out required and honored immediately.",
+        "Formal LIA (Legitimate Interests Assessment) audit record retained."
+      ]
+    },
+    "US": {
+      "country": "United States",
+      "statute": "CAN-SPAM Act (15 U.S.C. § 7701) & State Laws",
+      "cold_email_policy": "opt_out_allowed",
+      "requirements": [
+        "Accurate non-deceptive header, from-name, and subject line.",
+        "Clear identifying sender and valid physical postal address.",
+        "Functional opt-out mechanism honored within 10 business days.",
+        "Do not harvest emails via dictionary attacks or automated scraping of protected sites."
+      ]
+    },
+    "FR": {
+      "country": "France",
+      "statute": "CNIL Guidelines & French Postal and Electronic Communications Code (CPCE L.34-5)",
+      "cold_email_policy": "b2b_professional_role_relevance_with_opt_out",
+      "requirements": [
+        "Outreach must directly relate to recipient professional function.",
+        "Identity of the advertiser must be clear.",
+        "Clear opt-out mechanism on every communication."
+      ]
+    }
+  },
+  "blackout_periods": [
+    {
+      "name": "Year-End Enterprise Holiday Shutdown",
+      "start_date": "2026-12-18",
+      "end_date": "2027-01-04",
+      "action": "hard_freeze_all_outbound",
+      "scope": "global"
+    },
+    {
+      "name": "Retail & E-Commerce Q4 Code Freeze",
+      "start_date": "2026-10-20",
+      "end_date": "2027-01-05",
+      "action": "throttle_technical_changes_pitch_q1_planning_only",
+      "scope": "industry:e-commerce,retail"
+    },
+    {
+      "name": "EMEA Summer Slowdown Advisory",
+      "start_date": "2026-07-27",
+      "end_date": "2026-08-28",
+      "action": "soft_advisory_expect_lower_reply_rates",
+      "scope": "region:EMEA"
+    }
+  ],
+  "statutory_public_holidays_2026": {
+    "GB": [
+      { "date": "2026-01-01", "name": "New Year's Day" },
+      { "date": "2026-04-03", "name": "Good Friday" },
+      { "date": "2026-04-06", "name": "Easter Monday" },
+      { "date": "2026-05-04", "name": "Early May Bank Holiday" },
+      { "date": "2026-05-25", "name": "Spring Bank Holiday" },
+      { "date": "2026-08-31", "name": "Summer Bank Holiday" },
+      { "date": "2026-12-25", "name": "Christmas Day" },
+      { "date": "2026-12-28", "name": "Boxing Day (substitute day)" }
+    ],
+    "US": [
+      { "date": "2026-01-01", "name": "New Year's Day" },
+      { "date": "2026-01-19", "name": "Martin Luther King Jr. Day" },
+      { "date": "2026-02-16", "name": "Presidents' Day" },
+      { "date": "2026-05-25", "name": "Memorial Day" },
+      { "date": "2026-06-19", "name": "Juneteenth National Independence Day" },
+      { "date": "2026-07-03", "name": "Independence Day (Observed)" },
+      { "date": "2026-09-07", "name": "Labor Day" },
+      { "date": "2026-10-12", "name": "Columbus Day / Indigenous Peoples' Day" },
+      { "date": "2026-11-11", "name": "Veterans Day" },
+      { "date": "2026-11-26", "name": "Thanksgiving Day" },
+      { "date": "2026-11-27", "name": "Day After Thanksgiving" },
+      { "date": "2026-12-25", "name": "Christmas Day" }
+    ],
+    "DE": [
+      { "date": "2026-01-01", "name": "Neujahr" },
+      { "date": "2026-04-03", "name": "Karfreitag" },
+      { "date": "2026-04-06", "name": "Ostermontag" },
+      { "date": "2026-05-01", "name": "Tag der Arbeit" },
+      { "date": "2026-05-14", "name": "Christi Himmelfahrt" },
+      { "date": "2026-05-25", "name": "Pfingstmontag" },
+      { "date": "2026-10-03", "name": "Tag der Deutschen Einheit" },
+      { "date": "2026-12-25", "name": "1. Weihnachtstag" },
+      { "date": "2026-12-26", "name": "2. Weihnachtstag" }
+    ]
+  },
+  "contextual_advisories": {
+    "school_holidays": {
+      "status": "advisory_only",
+      "enforce_hard_stop": false,
+      "guidance": "School breaks can cause staggered leave for some executives, but are not uniform across regions. Do not block outreach automatically; observe Out-of-Office signals instead."
+    }
+  }
+}

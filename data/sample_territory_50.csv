@@ -1,0 +1,31 @@
+domain,company_name,industry,est_headcount,est_engineers,primary_cloud,known_trigger,contact_name,contact_title,country
+cloudscale.io,Cloudscale,B2B SaaS,420,85,AWS EKS,Job post 22d: Multi-cluster EKS drift,Marcus Vance,Lead Site Reliability Engineer,US
+finapex-bank.com,FinApex Bank,Financial Services,1400,220,Hybrid OpenStack AWS,SEC filing 110d: Hybrid cloud eval,Elena Rostova,Head of Infrastructure Architecture,US
+dataprime-analytics.com,DataPrime,Enterprise SaaS,550,120,AWS EKS,Blog post 380d: K8s architecture,David Chen,VP of Engineering,US
+micro-saas.co,MicroSaaS,Developer Tools,8,2,Heroku,None,Sam Reed,Founder,US
+munich-cloud.de,Munich Cloud,European Cloud Services,310,65,Multi-Cloud,Job post 15d: Multi-cluster security,Klaus Weber,Principal Infrastructure Engineer,DE
+retail-omni.com,OmniRetail,E-Commerce,2200,340,AWS,Q4 retail infrastructure maintenance,Rachel Green,Director of Platform Engineering,US
+scale-infra.io,ScaleInfra,Cloud Observability,680,140,AWS GCP,Job post 18d: Kubernetes IAM policies,Marcus Vance,Lead Platform Architect,US
+hyper-scale.net,HyperScale,SaaS Infrastructure,850,190,AWS,Exec hire 40d: New VP of Infrastructure,James Wilson,VP of Cloud Infrastructure,US
+adversarial-ai.com,Adversarial AI,AI Infrastructure,190,45,AWS EKS,Hiring 30d: Managing multi-cluster EKS,Dr. Alan Turing,Lead MLOps Engineer,US
+ghost-contact.io,GhostContact,Cybersecurity,290,60,GCP GKE,Job post 25d: Cluster security drift,Alex Mercer,Director of InfoSec,US
+offline-test.com,Offline Systems,Data Systems,410,75,AWS,Job post 35d: SRE policy automation,Brian Cox,Staff SRE,US
+enterprise-ops.com,Enterprise Ops,Cloud Platform,950,210,Multi-Cloud,Job post 12d: EKS cross-zone drift,Marcus Vance,Lead SRE,US
+vmware-division.com,VMware Division,Enterprise Virtualization,3500,800,Private Cloud,Broadcom acquisition completed,Paul Maritz,Director of Systems Engineering,US
+downsize-tech.io,Downsize Tech,Consumer App,1100,180,AWS,WARN layoff notice 15% workforce,Chloe Davis,VP of Infrastructure,US
+newco-energy.com,NewCo Energy,Energy Tech,750,130,Azure Kubernetes,Corporate spin-off clean target,Thomas Edison,Head of Platform,US
+retailer-global.co.uk,Global Retail UK,E-Commerce,1600,240,AWS EU-West,UK subsidiary separate cloud stack,Nigel Smith,Head of Cloud Operations,GB
+capital-holdings-asset.com,Capital Holdings,Asset Holding,12,0,None,None,Arthur Dent,Managing Partner,US
+medicare-health.org,Medicare Health,Digital Health,1300,190,AWS,Job post 28d: HIPAA compliant K8s,Dr. Lisa Cuddy,Chief Information Officer,US
+wallstreet-brokerage.com,WallStreet Brokerage,Broker-Dealer,2100,310,AWS On-Prem,FINRA compliant cluster migration,Gordon Gekko,Head of Algorithmic Infrastructure,US
+aero-defense.mil,Aero Defense,Defense Contractor,4500,950,Air-Gapped GovCloud,FedRAMP High workload requirements,Gen. Jack O'Neill,Director of Cyber Defense,US
+serverless-pivot.io,Serverless Pivot,FinTech,320,60,AWS ECS Serverless,Migrated off K8s 6m ago,Neo Anderson,VP Engineering,US
+budget-freeze-corp.com,Budget Freeze Corp,Media & Telecom,2800,420,Multi-Cloud,IT spending freeze until FY28,Logan Roy,Chief Technology Officer,US
+locked-down-systems.com,LockedDown Systems,Logistics,650,90,AWS,Junior SRE inquiry,Peter Parker,Junior SRE,US
+hostile-legal.com,Hostile Legal,Legal Tech,400,55,AWS,Cease and desist notice,Harvey Specter,Managing Partner,US
+competitor-locked.com,Competitor Locked,Enterprise SaaS,820,160,AWS,Signed 3-year CompetitorLegacy deal,Elliot Alderson,Lead DevOps Engineer,US
+cloud-enterprise.com,Cloud Enterprise,FinTech,1900,320,AWS,Fiscal year-end January 31,Kendall Roy,VP Cloud Platform,US
+sydney-tech.com.au,Sydney Tech,Software,580,110,AWS,Scaling EKS Sydney clusters,Bruce Wayne,Staff DevOps Engineer,AU
+tokyo-platform.co.jp,Tokyo Platform,E-Commerce,920,180,AWS,Tokyo cluster expansion,Kenzo Tange,Director of Cloud Engineering,JP
+chicago-infra.com,Chicago Infra,Logistics,1250,210,AWS GCP,Post-Thanksgiving deployment review,Michael Jordan,VP Infrastructure,US
+public-saas-corp.com,Public SaaS Corp,Cloud SaaS,3200,600,Multi-Cloud,EOQ closing review,Satya Nadella,EVP Engineering,US
