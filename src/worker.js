@@ -59,6 +59,12 @@ export default {
       });
     }
 
+    // Rewrite /cockpit to /cockpit.html for clean URL routing
+    if (url.pathname === '/cockpit') {
+      const cockpitUrl = new URL('/cockpit.html', request.url);
+      return env.ASSETS ? env.ASSETS.fetch(new Request(cockpitUrl, request)) : new Response('Not found', { status: 404 });
+    }
+
     // Fallback: serve static assets from website directory
     if (env.ASSETS) {
       return env.ASSETS.fetch(request);
